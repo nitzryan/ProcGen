@@ -18,7 +18,14 @@
     <item row="0" column="0">
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="MapWidget" name="mapWidget" native="true"/>
+       <widget class="MapWidget" name="mapWidget" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>

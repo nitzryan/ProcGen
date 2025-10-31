@@ -1,7 +1,10 @@
 #pragma once
 
-#include <QtWidgets/qwidget.h>
+#include <QWidget>
 #include <vector>
+#include <QVBoxLayout>
+#include <qboxlayout.h>
+#include <qlabel.h>
 
 struct Vector2D
 {
@@ -29,6 +32,9 @@ private:
 	int blockSize;
 	std::vector<uchar> noiseMap;
 	QImage GetNoiseImage() const;
+
+	QVBoxLayout* layout;
+	QLabel* mapLabel;
 
 	// Perlin generation variables
 	std::vector<int> permutationArray;

@@ -14,6 +14,9 @@ MapWidget::MapWidget(QWidget* parent)
 
 	noiseMap = std::vector<uchar>((width * blockSize + 1) * (height * blockSize + 1));
 
+	layout = new QVBoxLayout(this);
+	mapLabel = nullptr;
+
 	// Perlin initialization
 	p = std::vector<int>(2 * PERLIN_REP_COUNT);
 	permutationArray = std::vector<int>(PERLIN_REP_COUNT);
@@ -21,7 +24,10 @@ MapWidget::MapWidget(QWidget* parent)
 
 MapWidget::~MapWidget()
 {
+	if (mapLabel != nullptr)
+		delete mapLabel;
 
+	delete layout;
 }
 
 void MapWidget::GenerateMap(int seed, float noise, float frequency)
@@ -50,11 +56,19 @@ void MapWidget::GenerateMap(int seed, float noise, float frequency)
 	}
 
 	QImage image = GetNoiseImage();
-	QLabel* label = new QLabel(this);
-	label->setFixedSize(w, h);
-	label->setScaledContents(true);
-	label->setPixmap(QPixmap::fromImage(image));
-	label->show();
+	
+	if (mapLabel != nullptr)
+	{
+		layout->removeWidget(mapLabel);
+		delete mapLabel;
+	}
+		
+	mapLabel = new QLabel(this);
+	mapLabel->setFixedSize(w, h);
+	mapLabel->setScaledContents(true);
+	mapLabel->setPixmap(QPixmap::fromImage(image));
+	mapLabel->show();
+	layout->addWidget(mapLabel);
 	this->update();
 }
 
@@ -62,8 +76,6 @@ QImage MapWidget::GetNoiseImage() const
 {
 	int w = width * blockSize + 1;
 	int h = height * blockSize + 1;
-	qDebug() << w * h;
-	qDebug() << noiseMap.size();
 	QImage image = QImage(noiseMap.data(), w, h, w, QImage::Format_Grayscale8);
 	return image;
 }
