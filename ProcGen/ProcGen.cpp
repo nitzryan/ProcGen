@@ -9,7 +9,7 @@ ProcGen::ProcGen(QWidget *parent)
         ui.mapWidget->GenerateMap(seed, 0, 0);
     });
 
-    //ui.mapWidget->GenerateMap(100, 0, 0);
+    ui.mapWidget->GenerateMap(0, 0, 0);
 }
 
 ProcGen::~ProcGen()

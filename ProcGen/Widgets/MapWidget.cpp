@@ -12,6 +12,8 @@ MapWidget::MapWidget(QWidget* parent)
 	height = 16;
 	blockSize = 40;
 
+	noiseMap = std::vector<uchar>((width * blockSize + 1) * (height * blockSize + 1));
+
 	// Perlin initialization
 	p = std::vector<int>(2 * PERLIN_REP_COUNT);
 	permutationArray = std::vector<int>(PERLIN_REP_COUNT);
@@ -19,19 +21,11 @@ MapWidget::MapWidget(QWidget* parent)
 
 MapWidget::~MapWidget()
 {
-	if (noiseMap != nullptr)
-		delete noiseMap;
 
 }
 
 void MapWidget::GenerateMap(int seed, float noise, float frequency)
 {
-	// Ensure map is deleted if already called
-	if (noiseMap != nullptr)
-		delete noiseMap;
-
-	noiseMap = nullptr;
-
 	// Seed
 	std::mt19937 mt(seed);
 	for (int i = 0; i < PERLIN_REP_COUNT; i++)
@@ -40,10 +34,11 @@ void MapWidget::GenerateMap(int seed, float noise, float frequency)
 	for (int i = 0; i < 2 * PERLIN_REP_COUNT; i++)
 		p[i] = permutationArray[i % PERLIN_REP_COUNT];
 
-	// 
+	for (auto& i : noiseMap)
+		i = 0;
+	// Get individual points (move to grouping by blocks later)
 	int w = width * blockSize + 1;
 	int h = height * blockSize + 1;
-	noiseMap = new uchar[w * h];
 	float blockStep = 1.0f / blockSize;
 	for (int i = 0; i < w * h; i++)
 	{
@@ -51,7 +46,7 @@ void MapWidget::GenerateMap(int seed, float noise, float frequency)
 		int y_s = i / w;
 		float x = x_s * blockStep;
 		float y = y_s * blockStep;
-		noiseMap[i] = static_cast<uchar>(PerlinNoise(x, y) * 255);
+		noiseMap[i] = static_cast<uchar>((PerlinNoise(x, y) + 1.0) / 2.0 * 255);
 	}
 
 	QImage image = GetNoiseImage();
@@ -65,7 +60,11 @@ void MapWidget::GenerateMap(int seed, float noise, float frequency)
 
 QImage MapWidget::GetNoiseImage() const
 {
-	QImage image = QImage(noiseMap, width * blockSize + 1, height * blockSize + 1, QImage::Format_Grayscale8);
+	int w = width * blockSize + 1;
+	int h = height * blockSize + 1;
+	qDebug() << w * h;
+	qDebug() << noiseMap.size();
+	QImage image = QImage(noiseMap.data(), w, h, w, QImage::Format_Grayscale8);
 	return image;
 }
 
@@ -101,15 +100,7 @@ double MapWidget::PerlinNoise(double x, double y) const
 	float botLeftDot = Vector2D::Dot(botLeftDisp, botLeftValue);
 	float botRightDot = Vector2D::Dot(botRightDisp, botRightValue);
 
-	float topProportion = PerlinFade(yf);
-	float rightProportion = PerlinFade(xf);
-	float botProportion = 1 - topProportion;
-	float leftProportion = 1 - rightProportion;
-
-	return (topProportion * rightProportion * topRightDot) +
-		(topProportion * leftProportion * topLeftDot) +
-		(botProportion * rightProportion * botRightDot) +
-		(botProportion * leftProportion * botLeftDot);
+	return Lerp(u, Lerp(v, botLeftDot, topLeftDot), Lerp(v, botRightDot, topRightDot));
 }
 
 double MapWidget::PerlinFade(double t) const
@@ -120,6 +111,11 @@ double MapWidget::PerlinFade(double t) const
 double MapWidget::PerlinGrad(int hash, double x, double y) const
 {
 	return 0.0;
+}
+
+double MapWidget::Lerp(double t, double a1, double a2) const
+{
+	return a1 + t*(a2-a1);
 }
 
 Vector2D MapWidget::PerlinPointVector(int hash) const

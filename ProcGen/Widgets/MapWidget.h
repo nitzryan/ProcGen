@@ -27,7 +27,7 @@ public:
 private:
 	int width, height;
 	int blockSize;
-	uchar* noiseMap = nullptr;
+	std::vector<uchar> noiseMap;
 	QImage GetNoiseImage() const;
 
 	// Perlin generation variables
@@ -37,6 +37,7 @@ private:
 	double PerlinNoise(double x, double y) const;
 	double PerlinFade(double t) const;
 	double PerlinGrad(int hash, double x, double y) const;
+	double Lerp(double t, double a1, double a2) const;
 	Vector2D PerlinPointVector(int hash) const;
 };
 
