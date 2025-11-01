@@ -3,6 +3,7 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_ProcGen.h"
 #include <Generation/PerlinPass.h>
+#include <Widgets/PerlinPassWidget.h>
 
 class ProcGen : public QMainWindow
 {
@@ -15,6 +16,6 @@ public:
 private:
     Ui::ProcGenClass ui;
 
-    PerlinPass perlinPass;
+    QList<PerlinPassWidget*> perlinPassWidgets;
 };
 

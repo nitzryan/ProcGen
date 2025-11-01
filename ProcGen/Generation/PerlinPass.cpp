@@ -64,7 +64,7 @@ float* PerlinPass::GenerateMap(int seed, int w, int h, double blockSize, double 
 	{
 		float x = (i % width) / blockSize;
 		float y = (i / width) / blockSize;
-		output[i] = PerlinNoise(x, y) * outputScale;
+		output[i] = (PerlinNoise(x, y) + 1.0f) / 2.0f * outputScale;
 	}
 
 	return output.data();

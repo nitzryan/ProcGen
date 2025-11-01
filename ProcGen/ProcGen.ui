@@ -100,60 +100,7 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="SeedLayout">
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Seed</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSpinBox" name="sbSeed"/>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="NoiseLayout">
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Scale</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QDoubleSpinBox" name="dsbScale">
-          <property name="value">
-           <double>1.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="FrequencyLayout">
-        <item>
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>BlockSize</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QDoubleSpinBox" name="dsbBlockSize">
-          <property name="minimum">
-           <double>2.000000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>100000.000000000000000</double>
-          </property>
-          <property name="value">
-           <double>64.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <layout class="QVBoxLayout" name="passDataLayout"/>
       </item>
       <item>
        <widget class="QPushButton" name="pbGenerate">

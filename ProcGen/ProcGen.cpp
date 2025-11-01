@@ -1,26 +1,40 @@
 #include "ProcGen.h"
 
 ProcGen::ProcGen(QWidget *parent)
-    : QMainWindow(parent), perlinPass(16, 256)
+    : QMainWindow(parent)
 {
     ui.setupUi(this);
     connect(ui.pbGenerate, &QPushButton::pressed, this, [&]() {
-        int seed = ui.sbSeed->value();
         int width = ui.sbWidth->value();
         int height = ui.sbHeight->value();
-        double scale = ui.dsbScale->value();
-        double blockSize = ui.dsbBlockSize->value();
-        float* perlinPassData = perlinPass.GenerateMap(seed, width, height, blockSize, scale);
+        std::vector<float> data = std::vector<float>(width * height, 0);
+        for (auto pass : perlinPassWidgets)
+        {
+            float* passData = pass->GetPassOutput(width, height);
+            for (size_t i = 0; i < width * height; i++)
+            {
+                data[i] += passData[i];
+            }
+        }
         std::vector<uchar> pixelData(width * height);
         for (size_t i = 0; i < width * height; i++)
         {
-            pixelData[i] = (perlinPassData[i] + 1.0f) / 2.0f * 255.f;
+            pixelData[i] = data[i] * 255.f;
         }
 
         ui.mapWidget->GenerateMap(width, height, pixelData.data());
     });
 
+    PerlinPassWidget* ppw = new PerlinPassWidget("Initial Pass", 0, 128.0, 0.5, 16, 256);
+    PerlinPassWidget* ppw2 = new PerlinPassWidget("Larger Pass", 10, 512.0, 0.5, 16, 256);
+    perlinPassWidgets.append(ppw);
+    ui.passDataLayout->addWidget(ppw);
+    perlinPassWidgets.append(ppw2);
+    ui.passDataLayout->addWidget(ppw2);
+
     ui.pbGenerate->click();
+
+
 }
 
 ProcGen::~ProcGen()
