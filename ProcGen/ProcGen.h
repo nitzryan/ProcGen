@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_ProcGen.h"
+#include <Generation/PerlinPass.h>
 
 class ProcGen : public QMainWindow
 {
@@ -13,5 +14,7 @@ public:
 
 private:
     Ui::ProcGenClass ui;
+
+    PerlinPass perlinPass;
 };
 

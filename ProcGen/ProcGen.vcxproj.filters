@@ -24,6 +24,9 @@
     <Filter Include="Widgets">
       <UniqueIdentifier>{07729aa7-e929-407a-a6ab-274729917f92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Generation">
+      <UniqueIdentifier>{4b8cf4cb-dabe-463c-a2ed-3b65ddab5956}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ProcGen.qrc">
@@ -46,10 +49,18 @@
     <ClCompile Include="Widgets\MapWidget.cpp">
       <Filter>Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="Generation\PerlinPass.cpp">
+      <Filter>Generation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Widgets\MapWidget.h">
       <Filter>Widgets</Filter>
     </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Generation\PerlinPass.h">
+      <Filter>Generation</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

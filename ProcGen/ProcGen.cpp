@@ -1,7 +1,7 @@
 #include "ProcGen.h"
 
 ProcGen::ProcGen(QWidget *parent)
-    : QMainWindow(parent)
+    : QMainWindow(parent), perlinPass(16, 256)
 {
     ui.setupUi(this);
     connect(ui.pbGenerate, &QPushButton::pressed, this, [&]() {
@@ -10,10 +10,17 @@ ProcGen::ProcGen(QWidget *parent)
         int height = ui.sbHeight->value();
         double scale = ui.dsbScale->value();
         double blockSize = ui.dsbBlockSize->value();
-        ui.mapWidget->GenerateMap(seed, width, height, blockSize, scale);
+        float* perlinPassData = perlinPass.GenerateMap(seed, width, height, blockSize, scale);
+        std::vector<uchar> pixelData(width * height);
+        for (size_t i = 0; i < width * height; i++)
+        {
+            pixelData[i] = (perlinPassData[i] + 1.0f) / 2.0f * 255.f;
+        }
+
+        ui.mapWidget->GenerateMap(width, height, pixelData.data());
     });
 
-    ui.mapWidget->GenerateMap(0, ui.sbWidth->value(), ui.sbHeight->value(), ui.dsbBlockSize->value(), ui.dsbScale->value());
+    ui.pbGenerate->click();
 }
 
 ProcGen::~ProcGen()

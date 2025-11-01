@@ -92,6 +92,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Generation\PerlinPass.cpp" />
     <ClCompile Include="Widgets\MapWidget.cpp" />
     <QtRcc Include="ProcGen.qrc" />
     <QtUic Include="ProcGen.ui" />
@@ -101,6 +102,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Widgets\MapWidget.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Generation\PerlinPass.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
