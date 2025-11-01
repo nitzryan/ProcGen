@@ -4,7 +4,25 @@
 #include <algorithm>
 #include <qlabel.h>
 
-const Vector2D pointGradients[] = { {1, 1}, {1,-1}, {-1,1}, {-1,-1} };
+Vector2D GetUnitVector(double degrees)
+{
+	double radians = degrees * M_PI / 180;
+	return Vector2D{ cos(radians), sin(radians) };
+}
+
+#define NUM_GRADIENTS 16
+std::array<Vector2D, NUM_GRADIENTS> MakePointGradients()
+{
+	std::array<Vector2D, NUM_GRADIENTS> gradients{};
+	double degreeStepSize = 360.0 / NUM_GRADIENTS;
+	for (size_t i = 0; i < NUM_GRADIENTS; i++)
+	{
+		gradients[i] = GetUnitVector(i * degreeStepSize);
+	}
+	return gradients;
+}
+
+const std::array<Vector2D, NUM_GRADIENTS> pointGradients = MakePointGradients();
 
 MapWidget::MapWidget(QWidget* parent)
 {
@@ -132,5 +150,5 @@ double MapWidget::Lerp(double t, double a1, double a2) const
 
 Vector2D MapWidget::PerlinPointVector(int hash) const
 {
-	return pointGradients[hash % 4];
+	return pointGradients[hash % NUM_GRADIENTS];
 }

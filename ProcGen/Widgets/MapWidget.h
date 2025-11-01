@@ -8,10 +8,10 @@
 
 struct Vector2D
 {
-	float x;
-	float y;
+	double x;
+	double y;
 
-	static float Dot(const Vector2D& a, const Vector2D& b)
+	static double Dot(const Vector2D& a, const Vector2D& b)
 	{
 		return (a.x * b.x) + (a.y * b.y);
 	}
