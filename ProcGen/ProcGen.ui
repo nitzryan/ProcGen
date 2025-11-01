@@ -31,6 +31,74 @@
     </item>
     <item row="0" column="1">
      <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="topMargin">
+       <number>12</number>
+      </property>
+      <property name="bottomMargin">
+       <number>12</number>
+      </property>
+      <item>
+       <layout class="QVBoxLayout" name="MapSizeLayout">
+        <property name="bottomMargin">
+         <number>12</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Map Details</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="WidthLayout">
+          <item>
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Width</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="sbWidth">
+            <property name="minimum">
+             <number>64</number>
+            </property>
+            <property name="maximum">
+             <number>100000</number>
+            </property>
+            <property name="value">
+             <number>1024</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="HeightLayout">
+          <item>
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>Height</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="sbHeight">
+            <property name="minimum">
+             <number>64</number>
+            </property>
+            <property name="maximum">
+             <number>100000</number>
+            </property>
+            <property name="value">
+             <number>1024</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
       <item>
        <layout class="QHBoxLayout" name="SeedLayout">
         <item>
@@ -50,12 +118,16 @@
         <item>
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Noise</string>
+           <string>Scale</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="dsbNoise"/>
+         <widget class="QDoubleSpinBox" name="dsbScale">
+          <property name="value">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -64,12 +136,22 @@
         <item>
          <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>Frequency</string>
+           <string>BlockSize</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="dsbFrequency"/>
+         <widget class="QDoubleSpinBox" name="dsbBlockSize">
+          <property name="minimum">
+           <double>2.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>64.000000000000000</double>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>

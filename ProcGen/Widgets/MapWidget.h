@@ -25,11 +25,10 @@ public:
 	MapWidget(QWidget* parent = nullptr);
 	~MapWidget();
 
-	void GenerateMap(int seed, float noise, float frequency);
+	void GenerateMap(int seed, int width, int height, double blockSize, double outputScale);
 	
 private:
 	int width, height;
-	int blockSize;
 	std::vector<uchar> noiseMap;
 	QImage GetNoiseImage() const;
 

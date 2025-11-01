@@ -26,11 +26,8 @@ const std::array<Vector2D, NUM_GRADIENTS> pointGradients = MakePointGradients();
 
 MapWidget::MapWidget(QWidget* parent)
 {
-	width = 16;
-	height = 16;
-	blockSize = 40;
-
-	noiseMap = std::vector<uchar>((width * blockSize + 1) * (height * blockSize + 1));
+	width = 128;
+	height = 128;
 
 	layout = new QVBoxLayout(this);
 	mapLabel = nullptr;
@@ -48,8 +45,12 @@ MapWidget::~MapWidget()
 	delete layout;
 }
 
-void MapWidget::GenerateMap(int seed, float noise, float frequency)
+void MapWidget::GenerateMap(int seed, int width, int height, double blockSize, double outputScale)
 {
+	noiseMap = std::vector<uchar>(width * height);
+	this->width = width;
+	this->height = height;
+
 	// Seed
 	std::mt19937 mt(seed);
 	for (int i = 0; i < PERLIN_REP_COUNT; i++)
@@ -61,15 +62,10 @@ void MapWidget::GenerateMap(int seed, float noise, float frequency)
 	for (auto& i : noiseMap)
 		i = 0;
 	// Get individual points (move to grouping by blocks later)
-	int w = width * blockSize + 1;
-	int h = height * blockSize + 1;
-	float blockStep = 1.0f / blockSize;
-	for (int i = 0; i < w * h; i++)
+	for (int i = 0; i < width * height; i++)
 	{
-		int x_s = i % w;
-		int y_s = i / w;
-		float x = x_s * blockStep;
-		float y = y_s * blockStep;
+		float x = (i % width) / blockSize;
+		float y = (i / width) / blockSize;
 		noiseMap[i] = static_cast<uchar>((PerlinNoise(x, y) + 1.0) / 2.0 * 255);
 	}
 
@@ -82,7 +78,7 @@ void MapWidget::GenerateMap(int seed, float noise, float frequency)
 	}
 		
 	mapLabel = new QLabel(this);
-	mapLabel->setFixedSize(w, h);
+	mapLabel->setFixedSize(width, height);
 	mapLabel->setScaledContents(true);
 	mapLabel->setPixmap(QPixmap::fromImage(image));
 	mapLabel->show();
@@ -92,9 +88,7 @@ void MapWidget::GenerateMap(int seed, float noise, float frequency)
 
 QImage MapWidget::GetNoiseImage() const
 {
-	int w = width * blockSize + 1;
-	int h = height * blockSize + 1;
-	QImage image = QImage(noiseMap.data(), w, h, w, QImage::Format_Grayscale8);
+	QImage image = QImage(noiseMap.data(), width, height, width, QImage::Format_Grayscale8);
 	return image;
 }
 
