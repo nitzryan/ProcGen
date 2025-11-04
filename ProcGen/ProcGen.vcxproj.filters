@@ -55,6 +55,9 @@
     <ClCompile Include="Widgets\PerlinPassWidget.cpp">
       <Filter>Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="Generation\GenerationPipeline.cpp">
+      <Filter>Generation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Widgets\MapWidget.h">
@@ -62,6 +65,9 @@
     </QtMoc>
     <QtMoc Include="Widgets\PerlinPassWidget.h">
       <Filter>Widgets</Filter>
+    </QtMoc>
+    <QtMoc Include="Generation\GenerationPipeline.h">
+      <Filter>Generation</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +78,9 @@
   <ItemGroup>
     <QtUic Include="Widgets\PerlinPassWidget.ui">
       <Filter>Widgets</Filter>
+    </QtUic>
+    <QtUic Include="Generation\GenerationPipeline.ui">
+      <Filter>Generation</Filter>
     </QtUic>
   </ItemGroup>
 </Project>

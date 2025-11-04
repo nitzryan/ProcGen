@@ -16,7 +16,7 @@ public:
 	MapWidget(QWidget* parent = nullptr);
 	~MapWidget();
 
-	void GenerateMap(int width, int height, uchar* data);
+	void GenerateMap(int width, int height, QList<uchar> data);
 	
 private:
 

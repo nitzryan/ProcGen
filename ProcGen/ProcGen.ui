@@ -38,89 +38,14 @@
        <number>12</number>
       </property>
       <item>
-       <layout class="QVBoxLayout" name="MapSizeLayout">
-        <property name="bottomMargin">
-         <number>12</number>
-        </property>
-        <item>
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>Map Details</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="WidthLayout">
-          <item>
-           <widget class="QLabel" name="label_4">
-            <property name="text">
-             <string>Width</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QSpinBox" name="sbWidth">
-            <property name="minimum">
-             <number>64</number>
-            </property>
-            <property name="maximum">
-             <number>100000</number>
-            </property>
-            <property name="value">
-             <number>1024</number>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="HeightLayout">
-          <item>
-           <widget class="QLabel" name="label_5">
-            <property name="text">
-             <string>Height</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QSpinBox" name="sbHeight">
-            <property name="minimum">
-             <number>64</number>
-            </property>
-            <property name="maximum">
-             <number>100000</number>
-            </property>
-            <property name="value">
-             <number>1024</number>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="passDataLayout"/>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pbGenerate">
-        <property name="text">
-         <string>Generate</string>
+       <widget class="GenerationPipeline" name="pipeline" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
        </widget>
-      </item>
-      <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
       </item>
      </layout>
     </item>
@@ -133,6 +58,12 @@
    <class>MapWidget</class>
    <extends>QWidget</extends>
    <header>Widgets/MapWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>GenerationPipeline</class>
+   <extends>QWidget</extends>
+   <header>Generation/GenerationPipeline.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

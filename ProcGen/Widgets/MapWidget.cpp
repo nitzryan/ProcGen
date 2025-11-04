@@ -18,10 +18,10 @@ MapWidget::~MapWidget()
 	delete layout;
 }
 
-void MapWidget::GenerateMap(int width, int height, uchar* data)
+void MapWidget::GenerateMap(int width, int height, QList<uchar> data)
 {
 	
-	QImage image = QImage(data, width, height, width, QImage::Format_Grayscale8);
+	QImage image = QImage(data.data(), width, height, width, QImage::Format_Grayscale8);
 	
 	if (mapLabel != nullptr)
 	{

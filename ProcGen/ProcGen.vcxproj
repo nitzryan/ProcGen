@@ -92,10 +92,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Generation\GenerationPipeline.cpp" />
     <ClCompile Include="Generation\PerlinPass.cpp" />
     <ClCompile Include="Widgets\MapWidget.cpp" />
     <ClCompile Include="Widgets\PerlinPassWidget.cpp" />
     <QtRcc Include="ProcGen.qrc" />
+    <QtUic Include="Generation\GenerationPipeline.ui" />
     <QtUic Include="ProcGen.ui" />
     <QtMoc Include="ProcGen.h" />
     <ClCompile Include="ProcGen.cpp" />
@@ -106,6 +108,7 @@
     <QtMoc Include="Widgets\MapWidget.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="Generation\GenerationPipeline.h" />
     <ClInclude Include="Generation\PerlinPass.h" />
     <QtMoc Include="Widgets\PerlinPassWidget.h" />
   </ItemGroup>

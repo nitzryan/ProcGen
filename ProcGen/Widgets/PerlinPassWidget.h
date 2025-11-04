@@ -9,12 +9,16 @@ class PerlinPassWidget : public QWidget
 
 public:
 	PerlinPassWidget(QString name, int seed, double blockSize, double scale, int numGradients, int perlinRepCount, QWidget* parent = nullptr);
+	
 	~PerlinPassWidget();
+
+	PerlinPassWidget(std::ifstream& file);
+	void WriteToFile(std::ofstream& file);
 
 	float* GetPassOutput(int width, int height);
 private:
 	Ui::PerlinPassWidget ui;
-	PerlinPass perlinPass;
+	PerlinPass* perlinPass;
 	bool dropdownVisible = false;
 };
 
