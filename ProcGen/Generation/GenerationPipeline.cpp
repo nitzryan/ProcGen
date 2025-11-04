@@ -6,12 +6,20 @@
 #include "QSettingsSingleton.h"
 
 #define PIPELINE_REGISTRY_NAME "pipelineDir"
+#define LAST_LOADED_REGISTRY_NAME "lastLoadedFile"
 
 GenerationPipeline::GenerationPipeline(QWidget* parent) : QWidget(parent)
 {
 	ui.setupUi(this);
 
-	// (TODO): Load default (last loaded) filename
+	// Load default (last loaded) filename
+	QString lastFile = QSettingsSingleton::get().value(LAST_LOADED_REGISTRY_NAME, QString()).toString();
+	if (!lastFile.isEmpty())
+	{
+		ReadFile(lastFile.toStdString().c_str(), false);
+		QFileInfo fileInfo(lastFile);
+		ui.lblFilename->setText(fileInfo.baseName());
+	}
 
 	connect(ui.pbLoadFile, &QPushButton::pressed, this, [&]() {
 		QString lastDir = QSettingsSingleton::get().value(PIPELINE_REGISTRY_NAME, QDir::homePath()).toString();
@@ -23,7 +31,8 @@ GenerationPipeline::GenerationPipeline(QWidget* parent) : QWidget(parent)
 			return;
 
 		QSettingsSingleton::get().setValue(PIPELINE_REGISTRY_NAME, fileInfo.absoluteDir().absolutePath());
-		ReadFile(filename.toStdString().c_str());
+		QSettingsSingleton::get().setValue(LAST_LOADED_REGISTRY_NAME, filename);
+		ReadFile(filename.toStdString().c_str(), true);
 	});
 
 	connect(ui.pbSaveFile, &QPushButton::pressed, this, [&]() {
@@ -34,7 +43,9 @@ GenerationPipeline::GenerationPipeline(QWidget* parent) : QWidget(parent)
 
 		QFileInfo fileInfo(filename);
 		QSettingsSingleton::get().setValue(PIPELINE_REGISTRY_NAME, fileInfo.absoluteDir().absolutePath());
+		QSettingsSingleton::get().setValue(LAST_LOADED_REGISTRY_NAME, filename);
 		SaveFile(filename.toStdString().c_str());
+		ui.lblFilename->setText(fileInfo.baseName());
 	});
 
 	connect(ui.pbGenerate, &QPushButton::pressed, this, [&]() {
@@ -77,7 +88,7 @@ void GenerationPipeline::RemovePerlinPass(PerlinPassWidget* pp)
 	std::remove(perlinPasses.begin(), perlinPasses.end(), pp);
 }
 
-void GenerationPipeline::ReadFile(const char* filename)
+void GenerationPipeline::ReadFile(const char* filename, bool outputErrors)
 {
 	// Remove all existing items in layout
 	QLayoutItem* item;
@@ -97,6 +108,8 @@ void GenerationPipeline::ReadFile(const char* filename)
 		{
 			throw std::runtime_error("Unable to open file");
 		}
+
+		// Read pipeline-wide data
 		int width, height;
 		file >> width >> height;
 		ui.sbHeight->setValue(height);
@@ -105,6 +118,7 @@ void GenerationPipeline::ReadFile(const char* filename)
 		int num_elements;
 		file >> num_elements;
 
+		// Read individual elements
 		while (num_elements > 0)
 		{
 			int objType;
@@ -123,8 +137,11 @@ void GenerationPipeline::ReadFile(const char* filename)
 	}
 	catch (std::exception e)
 	{
-		QMessageBox errorBox;
-		errorBox.critical(nullptr, "File Read Error", e.what());
+		if (outputErrors)
+		{
+			QMessageBox errorBox;
+			errorBox.critical(nullptr, "File Read Error", e.what());
+		}
 	}
 
 	file.close();
@@ -142,6 +159,7 @@ void GenerationPipeline::SaveFile(const char* filename)
 	file.open(filename);
 
 	file << ui.sbWidth->value() << " " << ui.sbHeight->value() << std::endl;
+	file << perlinPasses.size() << std::endl;
 
 	for (auto i : perlinPasses)
 		i->WriteToFile(file);

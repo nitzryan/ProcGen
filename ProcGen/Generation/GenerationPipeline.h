@@ -21,7 +21,7 @@ private:
 
 	void AddPerlinPass();
 	void RemovePerlinPass(PerlinPassWidget* pp);
-	void ReadFile(const char* filename);
+	void ReadFile(const char* filename, bool outputErrors);
 	void SaveFile(const char* filename);
 };
 
