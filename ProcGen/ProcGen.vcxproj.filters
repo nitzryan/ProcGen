@@ -74,6 +74,9 @@
     <ClInclude Include="Generation\PerlinPass.h">
       <Filter>Generation</Filter>
     </ClInclude>
+    <ClInclude Include="QSettingsSingleton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="Widgets\PerlinPassWidget.ui">

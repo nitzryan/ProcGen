@@ -3,6 +3,9 @@
 #include <fstream>
 #include <QMessageBox>
 #include <QFileDialog>
+#include "QSettingsSingleton.h"
+
+#define PIPELINE_REGISTRY_NAME "pipelineDir"
 
 GenerationPipeline::GenerationPipeline(QWidget* parent) : QWidget(parent)
 {
@@ -11,21 +14,26 @@ GenerationPipeline::GenerationPipeline(QWidget* parent) : QWidget(parent)
 	// (TODO): Load default (last loaded) filename
 
 	connect(ui.pbLoadFile, &QPushButton::pressed, this, [&]() {
-		QString filename = QFileDialog::getOpenFileName(this, "Pipeline File");
+		QString lastDir = QSettingsSingleton::get().value(PIPELINE_REGISTRY_NAME, QDir::homePath()).toString();
+		QString filename = QFileDialog::getOpenFileName(this, "Pipeline File", lastDir);
 		QFileInfo fileInfo(filename);
 		ui.lblFilename->setText(fileInfo.baseName());
 
 		if (filename.isEmpty())
 			return;
 
+		QSettingsSingleton::get().setValue(PIPELINE_REGISTRY_NAME, fileInfo.absoluteDir().absolutePath());
 		ReadFile(filename.toStdString().c_str());
 	});
 
 	connect(ui.pbSaveFile, &QPushButton::pressed, this, [&]() {
-		QString filename = QFileDialog::getSaveFileName(this, "Pipeline File", QString(), tr("Pipeline Files (*.pipeline)"));
+		QString lastDir = QSettingsSingleton::get().value(PIPELINE_REGISTRY_NAME, QDir::homePath()).toString();
+		QString filename = QFileDialog::getSaveFileName(this, "Pipeline File", lastDir, tr("Pipeline Files (*.pipeline)"));
 		if (filename.isEmpty())
 			return;
 
+		QFileInfo fileInfo(filename);
+		QSettingsSingleton::get().setValue(PIPELINE_REGISTRY_NAME, fileInfo.absoluteDir().absolutePath());
 		SaveFile(filename.toStdString().c_str());
 	});
 

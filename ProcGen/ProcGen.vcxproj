@@ -108,6 +108,7 @@
     <QtMoc Include="Widgets\MapWidget.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="QSettingsSingleton.h" />
     <QtMoc Include="Generation\GenerationPipeline.h" />
     <ClInclude Include="Generation\PerlinPass.h" />
     <QtMoc Include="Widgets\PerlinPassWidget.h" />
