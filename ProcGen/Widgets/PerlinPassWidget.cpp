@@ -79,7 +79,7 @@ void PerlinPassWidget::WriteToFile(std::ofstream& file)
 {
 	file << "1\n";
 	file << ui.dropdownButton->text().toStdString() + " ";
-	file << ui.sbSeed->value() << "," << ui.sbNumGrad->value() << "," << ui.sbPerlinRep->value() << "," << ui.dsbBlockSize << "," << ui.dsbScale << "\n";
+	file << ui.sbSeed->value() << " " << ui.sbNumGrad->value() << " " << ui.sbPerlinRep->value() << " " << ui.dsbBlockSize->value() << " " << ui.dsbScale->value() << "\n";
 }
 
 PerlinPassWidget::~PerlinPassWidget()

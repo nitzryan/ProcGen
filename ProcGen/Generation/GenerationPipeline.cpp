@@ -12,6 +12,9 @@ GenerationPipeline::GenerationPipeline(QWidget* parent) : QWidget(parent)
 
 	connect(ui.pbLoadFile, &QPushButton::pressed, this, [&]() {
 		QString filename = QFileDialog::getOpenFileName(this, "Pipeline File");
+		QFileInfo fileInfo(filename);
+		ui.lblFilename->setText(fileInfo.baseName());
+
 		if (filename.isEmpty())
 			return;
 
@@ -19,7 +22,7 @@ GenerationPipeline::GenerationPipeline(QWidget* parent) : QWidget(parent)
 	});
 
 	connect(ui.pbSaveFile, &QPushButton::pressed, this, [&]() {
-		QString filename = QFileDialog::getSaveFileName(this, "Pipeline File", tr("Pipeline Files (*.pipeline)"));
+		QString filename = QFileDialog::getSaveFileName(this, "Pipeline File", QString(), tr("Pipeline Files (*.pipeline)"));
 		if (filename.isEmpty())
 			return;
 
@@ -68,6 +71,16 @@ void GenerationPipeline::RemovePerlinPass(PerlinPassWidget* pp)
 
 void GenerationPipeline::ReadFile(const char* filename)
 {
+	// Remove all existing items in layout
+	QLayoutItem* item;
+	while ((item = ui.perlinPassLayout->takeAt(0)) != nullptr)
+	{
+		delete item->widget();
+		delete item;
+	}
+	perlinPasses.clear();
+
+	// Read pipeline data
 	std::ifstream file;
 	file.open(filename);
 
@@ -81,7 +94,10 @@ void GenerationPipeline::ReadFile(const char* filename)
 		ui.sbHeight->setValue(height);
 		ui.sbWidth->setValue(width);
 
-		while (!file.eof())
+		int num_elements;
+		file >> num_elements;
+
+		while (num_elements > 0)
 		{
 			int objType;
 			file >> objType;
@@ -93,6 +109,8 @@ void GenerationPipeline::ReadFile(const char* filename)
 			else {
 				throw std::invalid_argument("Invalid Object type: " + std::to_string(objType));
 			}
+
+			num_elements--;
 		}
 	}
 	catch (std::exception e)
@@ -102,14 +120,6 @@ void GenerationPipeline::ReadFile(const char* filename)
 	}
 
 	file.close();
-
-	// Remove all existing items in layout
-	QLayoutItem* item;
-	while ((item = ui.perlinPassLayout->takeAt(0)) != nullptr)
-	{
-		delete item->widget();
-		delete item;
-	}
 
 	// Add items to layout
 	for (auto ppw : perlinPasses)
@@ -123,7 +133,7 @@ void GenerationPipeline::SaveFile(const char* filename)
 	std::ofstream file;
 	file.open(filename);
 
-	file << ui.sbWidth->value() << "," << ui.sbHeight->value() << std::endl;
+	file << ui.sbWidth->value() << " " << ui.sbHeight->value() << std::endl;
 
 	for (auto i : perlinPasses)
 		i->WriteToFile(file);
