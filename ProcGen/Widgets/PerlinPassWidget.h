@@ -16,9 +16,13 @@ public:
 	void WriteToFile(std::ofstream& file);
 
 	float* GetPassOutput(int width, int height);
+	void SetPositionComboBox(int length, int index);
+signals:
+	void PositionChanged(int index);
 private:
 	Ui::PerlinPassWidget ui;
 	PerlinPass* perlinPass;
 	bool dropdownVisible = false;
+	int dropdownLength = 0;
 };
 

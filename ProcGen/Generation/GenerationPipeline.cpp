@@ -1,6 +1,7 @@
 #include "GenerationPipeline.h"
 
 #include <fstream>
+#include <stdexcept>
 #include <QMessageBox>
 #include <QFileDialog>
 #include "QSettingsSingleton.h"
@@ -67,6 +68,13 @@ GenerationPipeline::GenerationPipeline(QWidget* parent) : QWidget(parent)
 
 		emit PipelineOutput(width, height, pixelData);
 	});
+
+	connect(ui.pbAddPerlinPass, &QPushButton::pressed, this, [&]() {
+		PerlinPassWidget* ppw = new PerlinPassWidget(QString("Perlin_Pass ").append(QString::number(perlinPasses.size())),
+			perlinPasses.size(), 128, 0, 16, 256);
+		perlinPasses.push_back(ppw);
+		AddPerlinPass(ppw, -1, true);
+	});
 }
 
 GenerationPipeline::~GenerationPipeline()
@@ -75,12 +83,67 @@ GenerationPipeline::~GenerationPipeline()
 		delete i;
 }
 
-void GenerationPipeline::AddPerlinPass()
+void GenerationPipeline::AddPerlinPass(PerlinPassWidget* pp, int index, bool updateAll)
 {
-	PerlinPassWidget* ppw = new PerlinPassWidget(QString("Perlin Pass ").append(QString::number(perlinPasses.size())),
-		perlinPasses.size(), 128, 0, 16, 256);
+	ui.perlinPassLayout->addWidget(pp);
+	connect(pp, &PerlinPassWidget::PositionChanged, this, [this, pp](int idx) {
+		ReorderPerlinPass(pp, idx);
+	});
 
-	// TODO: Add connections to allow for deletion
+	if (updateAll)
+	{
+		for (size_t i = 0; i < perlinPasses.size(); i++)
+		{
+			perlinPasses[i]->SetPositionComboBox(perlinPasses.size(), i);
+		}
+	}
+	else {
+		pp->SetPositionComboBox(perlinPasses.size(), index);
+	}
+}
+
+void GenerationPipeline::ReorderPerlinPass(PerlinPassWidget* pp, int newIndex)
+{
+	int oldIndex = -1;
+	
+	// Find current index
+	for (size_t i = 0; i < perlinPasses.size(); i++)
+	{
+		if (perlinPasses[i] == pp)
+		{
+			oldIndex = i;
+			break;
+		}
+	}
+
+	if (oldIndex == 1)
+		throw std::exception("Did not find pass in index, programming error");
+
+	// Move element down in list, shift all others up
+	if (newIndex < oldIndex)
+	{
+		for (size_t i = oldIndex; i > newIndex; i--)
+		{
+			perlinPasses[i] = perlinPasses[i - 1];
+			perlinPasses[i]->SetPositionComboBox(perlinPasses.size(), i);
+		}
+		
+	}
+	// Move element up in list, shift all others down
+	else 
+	{
+		for (size_t i = oldIndex; i < newIndex; i++)
+		{
+			perlinPasses[i] = perlinPasses[i + 1];
+			perlinPasses[i]->SetPositionComboBox(perlinPasses.size(), i);
+		}
+	}
+	
+	perlinPasses[newIndex] = pp;
+
+	// Reorder QLayout
+	QLayoutItem* item = ui.perlinPassLayout->takeAt(oldIndex);
+	ui.perlinPassLayout->insertItem(newIndex, item);
 }
 
 void GenerationPipeline::RemovePerlinPass(PerlinPassWidget* pp)
@@ -147,9 +210,9 @@ void GenerationPipeline::ReadFile(const char* filename, bool outputErrors)
 	file.close();
 
 	// Add items to layout
-	for (auto ppw : perlinPasses)
+	for (size_t i = 0; i < perlinPasses.size(); i++)
 	{
-		ui.perlinPassLayout->addWidget(ppw);
+		AddPerlinPass(perlinPasses[i], i, false);
 	}
 }
 

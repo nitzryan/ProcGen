@@ -19,7 +19,8 @@ private:
 	Ui::GenerationPipeline ui;
 	std::vector<PerlinPassWidget*> perlinPasses;
 
-	void AddPerlinPass();
+	void AddPerlinPass(PerlinPassWidget* pp, int index, bool updateAll);
+	void ReorderPerlinPass(PerlinPassWidget* pp, int newIndex);
 	void RemovePerlinPass(PerlinPassWidget* pp);
 	void ReadFile(const char* filename, bool outputErrors);
 	void SaveFile(const char* filename);

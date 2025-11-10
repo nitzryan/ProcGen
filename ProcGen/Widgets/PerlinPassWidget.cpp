@@ -32,6 +32,8 @@ PerlinPassWidget::PerlinPassWidget(QString name, int seed, double blockSize, dou
 	};
 	connect(ui.sbNumGrad, &QSpinBox::valueChanged, this, updatePerlinData);
 	connect(ui.sbPerlinRep, &QSpinBox::valueChanged, this, updatePerlinData);
+
+	connect(ui.cbPosition, &QComboBox::currentIndexChanged, this, &PerlinPassWidget::PositionChanged);
 }
 
 PerlinPassWidget::PerlinPassWidget(std::ifstream& file) : QWidget(nullptr)
@@ -73,6 +75,8 @@ PerlinPassWidget::PerlinPassWidget(std::ifstream& file) : QWidget(nullptr)
 		};
 	connect(ui.sbNumGrad, &QSpinBox::valueChanged, this, updatePerlinData);
 	connect(ui.sbPerlinRep, &QSpinBox::valueChanged, this, updatePerlinData);
+
+	connect(ui.cbPosition, &QComboBox::currentIndexChanged, this, &PerlinPassWidget::PositionChanged);
 }
 
 void PerlinPassWidget::WriteToFile(std::ofstream& file)
@@ -90,4 +94,24 @@ PerlinPassWidget::~PerlinPassWidget()
 float* PerlinPassWidget::GetPassOutput(int width, int height)
 {
 	return perlinPass->GenerateMap(ui.sbSeed->value(), width, height, ui.dsbBlockSize->value(), ui.dsbScale->value());
+}
+
+void PerlinPassWidget::SetPositionComboBox(int length, int index)
+{
+	ui.cbPosition->blockSignals(true);
+	
+	if (dropdownLength != length)
+	{
+		dropdownLength = length;
+
+		ui.cbPosition->clear();
+		for (int i = 0; i < dropdownLength; i++)
+		{
+			ui.cbPosition->addItem(QString::number(i + 1), i);
+		}
+	}
+
+	ui.cbPosition->setCurrentIndex(index);
+
+	ui.cbPosition->blockSignals(false);
 }
