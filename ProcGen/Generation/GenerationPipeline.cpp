@@ -116,7 +116,7 @@ void GenerationPipeline::ReorderPerlinPass(PerlinPassWidget* pp, int newIndex)
 		}
 	}
 
-	if (oldIndex == 1)
+	if (oldIndex == -1)
 		throw std::exception("Did not find pass in index, programming error");
 
 	// Move element down in list, shift all others up

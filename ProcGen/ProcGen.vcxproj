@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QSettingsSingleton.h" />
+    <ClInclude Include="Widgets\QStringUtilities.h" />
     <QtMoc Include="Generation\GenerationPipeline.h" />
     <ClInclude Include="Generation\PerlinPass.h" />
     <QtMoc Include="Widgets\PerlinPassWidget.h" />

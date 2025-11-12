@@ -1,6 +1,7 @@
 #include "PerlinPassWidget.h"
 
 #include <fstream>
+#include "QStringUtilities.h"
 
 PerlinPassWidget::PerlinPassWidget(QString name, int seed, double blockSize, double scale, int numGradients, int perlinRepCount, QWidget* parent) 
 	: QWidget(parent)
@@ -18,7 +19,7 @@ PerlinPassWidget::PerlinPassWidget(QString name, int seed, double blockSize, dou
 		else
 			ui.dropdownButton->setArrowType(Qt::DownArrow);
 	});
-	ui.dropdownButton->setText(name);
+	ui.lePassName->setText(QStringUtilities::FromFileQString(name));
 	ui.contentsWidget->setVisible(false);
 
 	ui.sbSeed->setValue(seed);
@@ -61,7 +62,9 @@ PerlinPassWidget::PerlinPassWidget(std::ifstream& file) : QWidget(nullptr)
 		else
 			ui.dropdownButton->setArrowType(Qt::DownArrow);
 		});
-	ui.dropdownButton->setText(name.c_str());
+
+	QString qName = QString(name.c_str());
+	ui.lePassName->setText(QStringUtilities::FromFileQString(qName));
 	ui.contentsWidget->setVisible(false);
 
 	ui.sbSeed->setValue(seed);
@@ -82,7 +85,8 @@ PerlinPassWidget::PerlinPassWidget(std::ifstream& file) : QWidget(nullptr)
 void PerlinPassWidget::WriteToFile(std::ofstream& file)
 {
 	file << "1\n";
-	file << ui.dropdownButton->text().toStdString() + " ";
+	QString name = ui.lePassName->text();
+	file << QStringUtilities::ToFileQString(name).toStdString() + " ";
 	file << ui.sbSeed->value() << " " << ui.sbNumGrad->value() << " " << ui.sbPerlinRep->value() << " " << ui.dsbBlockSize->value() << " " << ui.dsbScale->value() << "\n";
 }
 

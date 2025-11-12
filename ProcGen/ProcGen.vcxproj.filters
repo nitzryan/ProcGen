@@ -77,6 +77,9 @@
     <ClInclude Include="QSettingsSingleton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Widgets\QStringUtilities.h">
+      <Filter>Widgets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="Widgets\PerlinPassWidget.ui">
