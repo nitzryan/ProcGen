@@ -35,6 +35,7 @@ PerlinPassWidget::PerlinPassWidget(QString name, int seed, double blockSize, dou
 	connect(ui.sbPerlinRep, &QSpinBox::valueChanged, this, updatePerlinData);
 
 	connect(ui.cbPosition, &QComboBox::currentIndexChanged, this, &PerlinPassWidget::PositionChanged);
+	connect(ui.pbDelete, &QPushButton::pressed, this, &PerlinPassWidget::Delete);
 }
 
 PerlinPassWidget::PerlinPassWidget(std::ifstream& file) : QWidget(nullptr)
@@ -80,6 +81,7 @@ PerlinPassWidget::PerlinPassWidget(std::ifstream& file) : QWidget(nullptr)
 	connect(ui.sbPerlinRep, &QSpinBox::valueChanged, this, updatePerlinData);
 
 	connect(ui.cbPosition, &QComboBox::currentIndexChanged, this, &PerlinPassWidget::PositionChanged);
+	connect(ui.pbDelete, &QPushButton::pressed, this, &PerlinPassWidget::Delete);
 }
 
 void PerlinPassWidget::WriteToFile(std::ofstream& file)

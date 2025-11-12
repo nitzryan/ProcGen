@@ -37,8 +37,8 @@ GenerationPipeline::GenerationPipeline(QWidget* parent) : QWidget(parent)
 	});
 
 	connect(ui.pbSaveFile, &QPushButton::pressed, this, [&]() {
-		QString lastDir = QSettingsSingleton::get().value(PIPELINE_REGISTRY_NAME, QDir::homePath()).toString();
-		QString filename = QFileDialog::getSaveFileName(this, "Pipeline File", lastDir, tr("Pipeline Files (*.pipeline)"));
+		QString lastFile = QSettingsSingleton::get().value(LAST_LOADED_REGISTRY_NAME, QDir::homePath()).toString();
+		QString filename = QFileDialog::getSaveFileName(this, "Pipeline File", lastFile, tr("Pipeline Files (*.pipeline)"));
 		if (filename.isEmpty())
 			return;
 
@@ -88,6 +88,9 @@ void GenerationPipeline::AddPerlinPass(PerlinPassWidget* pp, int index, bool upd
 	ui.perlinPassLayout->addWidget(pp);
 	connect(pp, &PerlinPassWidget::PositionChanged, this, [this, pp](int idx) {
 		ReorderPerlinPass(pp, idx);
+	});
+	connect(pp, &PerlinPassWidget::Delete, this, [this, pp]() {
+		RemovePerlinPass(pp);
 	});
 
 	if (updateAll)
@@ -148,7 +151,29 @@ void GenerationPipeline::ReorderPerlinPass(PerlinPassWidget* pp, int newIndex)
 
 void GenerationPipeline::RemovePerlinPass(PerlinPassWidget* pp)
 {
-	std::remove(perlinPasses.begin(), perlinPasses.end(), pp);
+	if (perlinPasses.size() <= 1)
+	{
+		QMessageBox::information(nullptr, "Invalid Delete", "Couldn't delete only pass");
+		return;
+	}
+
+	int index = -1;
+	for (size_t i = 0; i < perlinPasses.size(); i++)
+	{
+		if (perlinPasses[i] == pp)
+		{
+			index = i;
+			break;
+		}
+	}
+	if (index == -1)
+		throw std::exception("Did not find pass in index, programming error");
+
+	perlinPasses.erase(std::remove(perlinPasses.begin(), perlinPasses.end(), pp), perlinPasses.end());
+	QLayoutItem* item = ui.perlinPassLayout->takeAt(index);
+	delete item->widget();
+	delete item;
+	
 }
 
 void GenerationPipeline::ReadFile(const char* filename, bool outputErrors)

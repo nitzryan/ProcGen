@@ -1,6 +1,6 @@
 1024 1024
 2
 1
-First_Pass 0 16 256 64 0.8
+First_Pass 1 16 256 128 0.75
 1
-Second_Pass 1 4 256 8 0.2
+Second_Pass 1 4 256 8 0.8

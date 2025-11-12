@@ -19,6 +19,7 @@ public:
 	void SetPositionComboBox(int length, int index);
 signals:
 	void PositionChanged(int index);
+	void Delete();
 private:
 	Ui::PerlinPassWidget ui;
 	PerlinPass* perlinPass;
