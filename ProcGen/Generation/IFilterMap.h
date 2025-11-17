@@ -23,17 +23,17 @@ public:
 			throw new std::exception("0 Or Negative Height in GenerateMap");
 		
 		// Regenerate values if changed
-		if (w != width || h != height)
+		if (w != mapWidth || h != mapHeight)
 		{
-			width = w;
-			height = h;
+			mapWidth = w;
+			mapHeight = h;
 			if (data != nullptr)
 				delete data;
-			data = new float[width * height];
+			data = new float[mapWidth * mapHeight];
 		}
 
 		// Zero out data
-		for (int i = 0; i < width * height; i++)
+		for (int i = 0; i < mapWidth * mapHeight; i++)
 			data[i] = 0;
 
 		random = std::mt19937(seed);
@@ -44,7 +44,7 @@ public:
 protected:
 	virtual void GenMap() = 0;
 
-	int width = 0, height = 0;
+	int mapWidth = 0, mapHeight = 0;
 	float* data = nullptr;
 
 	std::mt19937 random;
