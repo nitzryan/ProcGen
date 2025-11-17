@@ -58,6 +58,9 @@
     <ClCompile Include="Generation\GenerationPipeline.cpp">
       <Filter>Generation</Filter>
     </ClCompile>
+    <ClCompile Include="Generation\MountainFilterMap.cpp">
+      <Filter>Generation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Widgets\MapWidget.h">
@@ -79,6 +82,15 @@
     </ClInclude>
     <ClInclude Include="Widgets\QStringUtilities.h">
       <Filter>Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Generation\IFilterMap.h">
+      <Filter>Generation</Filter>
+    </ClInclude>
+    <ClInclude Include="Generation\MountainFilterMap.h">
+      <Filter>Generation</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

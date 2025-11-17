@@ -93,6 +93,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Generation\GenerationPipeline.cpp" />
+    <ClCompile Include="Generation\MountainFilterMap.cpp" />
     <ClCompile Include="Generation\PerlinPass.cpp" />
     <ClCompile Include="Widgets\MapWidget.cpp" />
     <ClCompile Include="Widgets\PerlinPassWidget.cpp" />
@@ -108,7 +109,10 @@
     <QtMoc Include="Widgets\MapWidget.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Generation\IFilterMap.h" />
+    <ClInclude Include="Generation\MountainFilterMap.h" />
     <ClInclude Include="QSettingsSingleton.h" />
+    <ClInclude Include="Utilities.h" />
     <ClInclude Include="Widgets\QStringUtilities.h" />
     <QtMoc Include="Generation\GenerationPipeline.h" />
     <ClInclude Include="Generation\PerlinPass.h" />
