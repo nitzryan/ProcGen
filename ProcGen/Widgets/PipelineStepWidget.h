@@ -3,7 +3,7 @@
 #include <QWidget>
 #include "ui_PipelineStepWidget.h"
 
-#include "PerlinPassWidget.h"
+#include "IPassWidget.h"
 #include "MountainFilterWidget.h"
 
 class PipelineStepWidget : public QWidget
@@ -29,7 +29,7 @@ private:
 	float* filterData = nullptr;
 	int dropdownLength = 0;
 
-	PerlinPassWidget* ppw;
+	std::vector<IPassWidget*> passes;
 	std::vector<MountainFilterWidget*> filters;
 };
 

@@ -4,7 +4,7 @@
 #include "QStringUtilities.h"
 
 PerlinPassWidget::PerlinPassWidget() 
-	: QWidget(nullptr)
+	: IPassWidget()
 {
 	ui.setupUi(this);
 
@@ -25,7 +25,7 @@ PerlinPassWidget::PerlinPassWidget()
 	connect(ui.sbPerlinRep, &QSpinBox::valueChanged, this, updatePerlinData);
 }
 
-PerlinPassWidget::PerlinPassWidget(std::ifstream& file) : QWidget(nullptr)
+PerlinPassWidget::PerlinPassWidget(std::ifstream& file) : IPassWidget()
 {
 	int seed, numGradients, perlinRepCount;
 	double blockSize, scale;
@@ -52,9 +52,9 @@ PerlinPassWidget::PerlinPassWidget(std::ifstream& file) : QWidget(nullptr)
 	connect(ui.sbPerlinRep, &QSpinBox::valueChanged, this, updatePerlinData);
 }
 
-void PerlinPassWidget::WriteToFile(std::ofstream& file)
+void PerlinPassWidget::WriteToFile(std::ofstream& file) const
 {
-	file << "\t\t1 ";
+	file << "\t\t\t" << static_cast<int>(IPassWidgetNS::PASS_TYPE::PERLIN) << " ";
 	file << ui.sbSeed->value() << " " << ui.sbNumGrad->value() << " " << ui.sbPerlinRep->value() << " " << ui.dsbBlockSize->value() << " " << ui.dsbScale->value() << "\n";
 }
 

@@ -67,6 +67,9 @@
     <ClCompile Include="Widgets\PipelineStepWidget.cpp">
       <Filter>Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="Widgets\OffsetPass.cpp">
+      <Filter>Widgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Widgets\MapWidget.h">
@@ -82,6 +85,9 @@
       <Filter>Widgets</Filter>
     </QtMoc>
     <QtMoc Include="Widgets\PipelineStepWidget.h">
+      <Filter>Widgets</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\OffsetPass.h">
       <Filter>Widgets</Filter>
     </QtMoc>
   </ItemGroup>
@@ -104,6 +110,9 @@
     <ClInclude Include="Utilities.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Widgets\IPassWidget.h">
+      <Filter>Widgets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="Widgets\PerlinPassWidget.ui">
@@ -116,6 +125,9 @@
       <Filter>Widgets</Filter>
     </QtUic>
     <QtUic Include="Widgets\PipelineStepWidget.ui">
+      <Filter>Widgets</Filter>
+    </QtUic>
+    <QtUic Include="Widgets\OffsetPass.ui">
       <Filter>Widgets</Filter>
     </QtUic>
   </ItemGroup>

@@ -2,11 +2,14 @@
 
 #include <fstream>
 #include "QStringUtilities.h"
+#include "PerlinPassWidget.h"
+#include "OffsetPass.h"
+#include "MountainFilterWidget.h"
 
 PipelineStepWidget::PipelineStepWidget()
 {
 	ui.setupUi(this);
-	ppw = new PerlinPassWidget();
+	passes.push_back(new PerlinPassWidget());
 
 	SetupWidget();
 }
@@ -20,14 +23,32 @@ PipelineStepWidget::PipelineStepWidget(std::ifstream& file)
 	QString n = QString(name.c_str());
 	QString outputName = QStringUtilities::FromFileQString(n);
 	ui.lePassName->setText(outputName);
-	
-	int elementType;
-	file >> elementType;
-	if (elementType == 1)
-		ppw = new PerlinPassWidget(file);
-	else
-		throw new std::exception("Invalid element type received at PipelineStepWidget");
 
+	// Read in passes
+	int numPasses;
+	file >> numPasses;
+	if (numPasses <= 0)
+		throw std::exception("Expected a positive number of passes in PipelineStepWidget");
+
+	passes.reserve(numPasses);
+	for (int i = 0; i < numPasses; i++)
+	{
+		int elementType;
+		file >> elementType;
+		switch (elementType)
+		{
+		case static_cast<int>(IPassWidgetNS::PASS_TYPE::PERLIN):
+			passes.push_back(new PerlinPassWidget(file));
+			break;
+		case static_cast<int>(IPassWidgetNS::PASS_TYPE::OFFSET):
+			passes.push_back(new OffsetPass(file));
+			break;
+		default:
+			throw std::exception("Invalid element type received at PipelineStepWidget");
+		}	
+	}
+
+	// Read in filters
 	int numFilters;
 	file >> numFilters;
 	if (numFilters != 0)
@@ -52,7 +73,9 @@ PipelineStepWidget::PipelineStepWidget(std::ifstream& file)
 
 PipelineStepWidget::~PipelineStepWidget()
 {
-	delete ppw;
+	for (auto pass : passes)
+		delete pass;
+
 	for (auto filter : filters)
 		delete filter;
 
@@ -67,8 +90,10 @@ void PipelineStepWidget::WriteToFile(std::ofstream& file)
 {
 	QString name = ui.lePassName->text();
 	file << "\t" << QStringUtilities::ToFileQString(name).toStdString() + "\n";
-	ppw->WriteToFile(file);
-	file << "\t\t" << filters.size();
+	file << "\t\t" << passes.size() << "\n";
+	for (auto p : passes)
+		p->WriteToFile(file);
+	file << "\t\t" << filters.size() << "\n";
 	for (auto f : filters)
 		f->WriteToFile(file);
 }
@@ -78,8 +103,11 @@ float* PipelineStepWidget::GetPassOutput(int width, int height)
 	if (stepData != nullptr)
 		delete stepData;
 	stepData = new float[width * height];
+	for (int i = 0; i < width * height; i++)
+		stepData[i] = 0;
 	
-	ppw->GetPassOutput(width, height, stepData);
+	for (auto p : passes)
+		p->GetPassOutput(width, height, stepData);
 
 	if (filterData != nullptr)
 		delete filterData;
@@ -126,7 +154,8 @@ void PipelineStepWidget::SetupWidget()
 	connect(ui.cbPosition, &QComboBox::currentIndexChanged, this, &PipelineStepWidget::PositionChanged);
 	connect(ui.pbDelete, &QPushButton::pressed, this, &PipelineStepWidget::Delete);
 
-	ui.perlinPassLayout->addWidget(ppw);
+	for (auto p : passes)
+		ui.perlinPassLayout->addWidget(p);
 	for (auto f : filters)
 		ui.filtersLayout->addWidget(f);
 }

@@ -97,6 +97,7 @@
     <ClCompile Include="Generation\PerlinPass.cpp" />
     <ClCompile Include="Widgets\MapWidget.cpp" />
     <ClCompile Include="Widgets\MountainFilterWidget.cpp" />
+    <ClCompile Include="Widgets\OffsetPass.cpp" />
     <ClCompile Include="Widgets\PerlinPassWidget.cpp" />
     <ClCompile Include="Widgets\PipelineStepWidget.cpp" />
     <QtRcc Include="ProcGen.qrc" />
@@ -106,6 +107,7 @@
     <ClCompile Include="ProcGen.cpp" />
     <ClCompile Include="main.cpp" />
     <QtUic Include="Widgets\MountainFilterWidget.ui" />
+    <QtUic Include="Widgets\OffsetPass.ui" />
     <QtUic Include="Widgets\PerlinPassWidget.ui" />
     <QtUic Include="Widgets\PipelineStepWidget.ui" />
   </ItemGroup>
@@ -119,6 +121,8 @@
     <ClInclude Include="Utilities.h" />
     <QtMoc Include="Widgets\MountainFilterWidget.h" />
     <QtMoc Include="Widgets\PipelineStepWidget.h" />
+    <ClInclude Include="Widgets\IPassWidget.h" />
+    <QtMoc Include="Widgets\OffsetPass.h" />
     <ClInclude Include="Widgets\QStringUtilities.h" />
     <QtMoc Include="Generation\GenerationPipeline.h" />
     <ClInclude Include="Generation\PerlinPass.h" />
