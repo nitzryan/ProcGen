@@ -54,11 +54,17 @@ GenerationPipeline::GenerationPipeline(QWidget* parent) : QWidget(parent)
 		int height = ui.sbHeight->value();
 		std::vector<float> data(width * height, 0);
 
-		for (auto ps : pipelineSteps)
+		try {
+			for (auto ps : pipelineSteps)
+			{
+				auto passResults = ps->GetPassOutput(width, height);
+				for (size_t i = 0; i < width * height; i++)
+					data[i] += passResults[i];
+			}
+		}
+		catch (std::exception e)
 		{
-			auto passResults = ps->GetPassOutput(width, height);
-			for (size_t i = 0; i < width * height; i++)
-				data[i] += passResults[i];
+			return;
 		}
 
 		// Convert to 0-255

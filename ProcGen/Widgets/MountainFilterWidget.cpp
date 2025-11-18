@@ -79,6 +79,8 @@ void MountainFilterWidget::WriteToFile(std::ofstream& file)
 
 void MountainFilterWidget::GetOuput(int width, int height, float* data)
 {
+	UpdateFilterMap();
+	
 	map.GenerateMap(width, height, ui.sbSeed->value(), data);
 }
 
@@ -107,6 +109,7 @@ void MountainFilterWidget::UpdateFilterMap()
 	{
 		QMessageBox errorBox;
 		errorBox.critical(nullptr, "Mountain Filter Creation Error", e.what());
+		throw std::exception();
 	}
 	
 }
