@@ -1,10 +1,10 @@
 #include "PipelineStepWidget.h"
 
 #include <fstream>
-#include "QStringUtilities.h"
-#include "PerlinPassWidget.h"
-#include "OffsetPass.h"
-#include "MountainFilterWidget.h"
+#include <Widgets/QStringUtilities.h>
+#include <Widgets/Passes/Perlin/PerlinPassWidget.h>
+#include <Widgets/Passes/Offset/OffsetPass.h>
+#include <Widgets/Filters/Mountain/MountainFilterWidget.h>
 
 PipelineStepWidget::PipelineStepWidget()
 {

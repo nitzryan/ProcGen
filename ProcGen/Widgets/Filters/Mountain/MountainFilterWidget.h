@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ui_MountainFilterWidget.h"
-#include <Generation/MountainFilterMap.h>
+#include <Generation/Mountain/MountainFilterMap.h>
 
 class MountainFilterWidget : public QWidget
 {

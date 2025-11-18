@@ -57,13 +57,13 @@
   <customwidget>
    <class>MapWidget</class>
    <extends>QWidget</extends>
-   <header>Widgets/MapWidget.h</header>
+   <header>Widgets/Map/MapWidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>GenerationPipeline</class>
    <extends>QWidget</extends>
-   <header>Generation/GenerationPipeline.h</header>
+   <header>Generation/Pipeline/GenerationPipeline.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

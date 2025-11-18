@@ -2,7 +2,7 @@
 
 #include <QWidget>
 #include "ui_OffsetPass.h"
-#include "IPassWidget.h"
+#include <Widgets/Passes/IPassWidget.h>
 
 class OffsetPass : public IPassWidget
 {

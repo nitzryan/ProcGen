@@ -2,8 +2,8 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_ProcGen.h"
-#include <Generation/PerlinPass.h>
-#include <Widgets/PerlinPassWidget.h>
+#include <Generation/Perlin/PerlinPass.h>
+#include <Widgets/Passes/Perlin/PerlinPassWidget.h>
 
 class ProcGen : public QMainWindow
 {

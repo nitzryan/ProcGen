@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <Widgets/PipelineStepWidget.h>
+#include <Widgets/Step/PipelineStepWidget.h>
 #include <QWidget>
 #include <ui_GenerationPipeline.h>
 

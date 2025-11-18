@@ -1,7 +1,7 @@
 #include "PerlinPassWidget.h"
 
 #include <fstream>
-#include "QStringUtilities.h"
+#include <Widgets/QStringUtilities.h>
 
 PerlinPassWidget::PerlinPassWidget() 
 	: IPassWidget()

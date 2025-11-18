@@ -1,8 +1,8 @@
 #pragma once
 
 #include <ui_PerlinPassWidget.h>
-#include <Generation/PerlinPass.h>
-#include "IPassWidget.h"
+#include <Generation/Perlin/PerlinPass.h>
+#include <Widgets/Passes/IPassWidget.h>
 
 class PerlinPassWidget : public IPassWidget
 {

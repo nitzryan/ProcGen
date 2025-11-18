@@ -3,8 +3,8 @@
 #include <QWidget>
 #include "ui_PipelineStepWidget.h"
 
-#include "IPassWidget.h"
-#include "MountainFilterWidget.h"
+#include <Widgets/Passes/IPassWidget.h>
+#include <Widgets/Filters/Mountain/MountainFilterWidget.h>
 
 class PipelineStepWidget : public QWidget
 {

@@ -27,6 +27,15 @@
     <Filter Include="Generation">
       <UniqueIdentifier>{4b8cf4cb-dabe-463c-a2ed-3b65ddab5956}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Widgets\Passes">
+      <UniqueIdentifier>{235b05ee-311d-431f-a0c3-9c4dae7dc61f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Widgets\Filters">
+      <UniqueIdentifier>{e9bd750b-bf7b-46d8-9ca3-45b0286ccc49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Widgets\Passes\Perlin">
+      <UniqueIdentifier>{5f530af8-8c44-44d6-9998-efb1f74ad6ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ProcGen.qrc">
@@ -46,53 +55,53 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Widgets\MapWidget.cpp">
+    <ClCompile Include="Widgets\Map\MapWidget.cpp">
       <Filter>Widgets</Filter>
     </ClCompile>
-    <ClCompile Include="Generation\PerlinPass.cpp">
+    <ClCompile Include="Generation\Perlin\PerlinPass.cpp">
       <Filter>Generation</Filter>
     </ClCompile>
-    <ClCompile Include="Widgets\PerlinPassWidget.cpp">
+    <ClCompile Include="Widgets\Passes\Perlin\PerlinPassWidget.cpp">
       <Filter>Widgets</Filter>
     </ClCompile>
-    <ClCompile Include="Generation\GenerationPipeline.cpp">
+    <ClCompile Include="Generation\Pipeline\GenerationPipeline.cpp">
       <Filter>Generation</Filter>
     </ClCompile>
-    <ClCompile Include="Generation\MountainFilterMap.cpp">
+    <ClCompile Include="Generation\Mountain\MountainFilterMap.cpp">
       <Filter>Generation</Filter>
     </ClCompile>
-    <ClCompile Include="Widgets\MountainFilterWidget.cpp">
+    <ClCompile Include="Widgets\Filters\Mountain\MountainFilterWidget.cpp">
       <Filter>Widgets</Filter>
     </ClCompile>
-    <ClCompile Include="Widgets\PipelineStepWidget.cpp">
+    <ClCompile Include="Widgets\Step\PipelineStepWidget.cpp">
       <Filter>Widgets</Filter>
     </ClCompile>
-    <ClCompile Include="Widgets\OffsetPass.cpp">
+    <ClCompile Include="Widgets\Passes\Offset\OffsetPass.cpp">
       <Filter>Widgets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="Widgets\MapWidget.h">
+    <QtMoc Include="Widgets\Map\MapWidget.h">
       <Filter>Widgets</Filter>
     </QtMoc>
-    <QtMoc Include="Widgets\PerlinPassWidget.h">
+    <QtMoc Include="Widgets\Passes\Perlin\PerlinPassWidget.h">
       <Filter>Widgets</Filter>
     </QtMoc>
-    <QtMoc Include="Generation\GenerationPipeline.h">
+    <QtMoc Include="Generation\Pipeline\GenerationPipeline.h">
       <Filter>Generation</Filter>
     </QtMoc>
-    <QtMoc Include="Widgets\MountainFilterWidget.h">
+    <QtMoc Include="Widgets\Filters\Mountain\MountainFilterWidget.h">
       <Filter>Widgets</Filter>
     </QtMoc>
-    <QtMoc Include="Widgets\PipelineStepWidget.h">
+    <QtMoc Include="Widgets\Step\PipelineStepWidget.h">
       <Filter>Widgets</Filter>
     </QtMoc>
-    <QtMoc Include="Widgets\OffsetPass.h">
+    <QtMoc Include="Widgets\Passes\Offset\OffsetPass.h">
       <Filter>Widgets</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Generation\PerlinPass.h">
+    <ClInclude Include="Generation\Perlin\PerlinPass.h">
       <Filter>Generation</Filter>
     </ClInclude>
     <ClInclude Include="QSettingsSingleton.h">
@@ -104,30 +113,30 @@
     <ClInclude Include="Generation\IFilterMap.h">
       <Filter>Generation</Filter>
     </ClInclude>
-    <ClInclude Include="Generation\MountainFilterMap.h">
+    <ClInclude Include="Generation\Mountain\MountainFilterMap.h">
       <Filter>Generation</Filter>
     </ClInclude>
     <ClInclude Include="Utilities.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Widgets\IPassWidget.h">
+    <ClInclude Include="Widgets\Passes\IPassWidget.h">
       <Filter>Widgets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="Widgets\PerlinPassWidget.ui">
+    <QtUic Include="Widgets\Passes\Perlin\PerlinPassWidget.ui">
       <Filter>Widgets</Filter>
     </QtUic>
-    <QtUic Include="Generation\GenerationPipeline.ui">
+    <QtUic Include="Generation\Pipeline\GenerationPipeline.ui">
       <Filter>Generation</Filter>
     </QtUic>
-    <QtUic Include="Widgets\MountainFilterWidget.ui">
+    <QtUic Include="Widgets\Filters\Mountain\MountainFilterWidget.ui">
       <Filter>Widgets</Filter>
     </QtUic>
-    <QtUic Include="Widgets\PipelineStepWidget.ui">
+    <QtUic Include="Widgets\Step\PipelineStepWidget.ui">
       <Filter>Widgets</Filter>
     </QtUic>
-    <QtUic Include="Widgets\OffsetPass.ui">
+    <QtUic Include="Widgets\Passes\Offset\OffsetPass.ui">
       <Filter>Widgets</Filter>
     </QtUic>
   </ItemGroup>

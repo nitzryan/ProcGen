@@ -1,6 +1,6 @@
 #include "ProcGen.h"
 
-#include "Generation/MountainFilterMap.h"
+#include <Generation/Mountain/MountainFilterMap.h>
 
 ProcGen::ProcGen(QWidget *parent)
     : QMainWindow(parent)
