@@ -96,14 +96,18 @@
     <ClCompile Include="Generation\MountainFilterMap.cpp" />
     <ClCompile Include="Generation\PerlinPass.cpp" />
     <ClCompile Include="Widgets\MapWidget.cpp" />
+    <ClCompile Include="Widgets\MountainFilterWidget.cpp" />
     <ClCompile Include="Widgets\PerlinPassWidget.cpp" />
+    <ClCompile Include="Widgets\PipelineStepWidget.cpp" />
     <QtRcc Include="ProcGen.qrc" />
     <QtUic Include="Generation\GenerationPipeline.ui" />
     <QtUic Include="ProcGen.ui" />
     <QtMoc Include="ProcGen.h" />
     <ClCompile Include="ProcGen.cpp" />
     <ClCompile Include="main.cpp" />
+    <QtUic Include="Widgets\MountainFilterWidget.ui" />
     <QtUic Include="Widgets\PerlinPassWidget.ui" />
+    <QtUic Include="Widgets\PipelineStepWidget.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Widgets\MapWidget.h" />
@@ -113,6 +117,8 @@
     <ClInclude Include="Generation\MountainFilterMap.h" />
     <ClInclude Include="QSettingsSingleton.h" />
     <ClInclude Include="Utilities.h" />
+    <QtMoc Include="Widgets\MountainFilterWidget.h" />
+    <QtMoc Include="Widgets\PipelineStepWidget.h" />
     <ClInclude Include="Widgets\QStringUtilities.h" />
     <QtMoc Include="Generation\GenerationPipeline.h" />
     <ClInclude Include="Generation\PerlinPass.h" />

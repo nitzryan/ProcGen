@@ -39,13 +39,12 @@ void PerlinPass::Reinitialize(int numGradients, int perlinRepCount)
 	this->perlinRepCount = perlinRepCount;
 }
 
-float* PerlinPass::GenerateMap(int seed, int w, int h, double blockSize, double outputScale)
+void PerlinPass::GenerateMap(int seed, int w, int h, double blockSize, double outputScale, float* data)
 {
 	if (w != width || h != height)
 	{
 		width = w;
 		height = h;
-		output = std::vector<float>(width * height);
 	}
 
 	// Seed permutation array
@@ -58,16 +57,12 @@ float* PerlinPass::GenerateMap(int seed, int w, int h, double blockSize, double 
 
 	
 	// Get individual points (move to grouping by blocks later)
-	for (auto& i : output)
-		i = 0;
 	for (int i = 0; i < width * height; i++)
 	{
 		float x = (i % width) / blockSize;
 		float y = (i / width) / blockSize;
-		output[i] = (PerlinNoise(x, y) + 1.0f) / 2.0f * outputScale;
+		data[i] = (PerlinNoise(x, y) + 1.0f) / 2.0f * outputScale;
 	}
-
-	return output.data();
 }
 
 float PerlinPass::PerlinNoise(float x, float y) const

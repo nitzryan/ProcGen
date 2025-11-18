@@ -54,9 +54,9 @@ GenerationPipeline::GenerationPipeline(QWidget* parent) : QWidget(parent)
 		int height = ui.sbHeight->value();
 		std::vector<float> data(width * height, 0);
 
-		for (auto ppw : perlinPasses)
+		for (auto ps : pipelineSteps)
 		{
-			auto passResults = ppw->GetPassOutput(width, height);
+			auto passResults = ps->GetPassOutput(width, height);
 			for (size_t i = 0; i < width * height; i++)
 				data[i] += passResults[i];
 		}
@@ -70,49 +70,48 @@ GenerationPipeline::GenerationPipeline(QWidget* parent) : QWidget(parent)
 	});
 
 	connect(ui.pbAddPerlinPass, &QPushButton::pressed, this, [&]() {
-		PerlinPassWidget* ppw = new PerlinPassWidget(QString("Perlin_Pass ").append(QString::number(perlinPasses.size())),
-			perlinPasses.size(), 128, 0, 16, 256);
-		perlinPasses.push_back(ppw);
-		AddPerlinPass(ppw, -1, true);
+		PipelineStepWidget* psw = new PipelineStepWidget();
+		pipelineSteps.push_back(psw);
+		AddStep(psw, -1, true);
 	});
 }
 
 GenerationPipeline::~GenerationPipeline()
 {
-	for (auto i : perlinPasses)
+	for (auto i : pipelineSteps)
 		delete i;
 }
 
-void GenerationPipeline::AddPerlinPass(PerlinPassWidget* pp, int index, bool updateAll)
+void GenerationPipeline::AddStep(PipelineStepWidget* pp, int index, bool updateAll)
 {
 	ui.perlinPassLayout->addWidget(pp);
-	connect(pp, &PerlinPassWidget::PositionChanged, this, [this, pp](int idx) {
-		ReorderPerlinPass(pp, idx);
+	connect(pp, &PipelineStepWidget::PositionChanged, this, [this, pp](int idx) {
+		ReorderStep(pp, idx);
 	});
-	connect(pp, &PerlinPassWidget::Delete, this, [this, pp]() {
-		RemovePerlinPass(pp);
+	connect(pp, &PipelineStepWidget::Delete, this, [this, pp]() {
+		RemoveStep(pp);
 	});
 
 	if (updateAll)
 	{
-		for (size_t i = 0; i < perlinPasses.size(); i++)
+		for (size_t i = 0; i < pipelineSteps.size(); i++)
 		{
-			perlinPasses[i]->SetPositionComboBox(perlinPasses.size(), i);
+			pipelineSteps[i]->SetPositionComboBox(pipelineSteps.size(), i);
 		}
 	}
 	else {
-		pp->SetPositionComboBox(perlinPasses.size(), index);
+		pp->SetPositionComboBox(pipelineSteps.size(), index);
 	}
 }
 
-void GenerationPipeline::ReorderPerlinPass(PerlinPassWidget* pp, int newIndex)
+void GenerationPipeline::ReorderStep(PipelineStepWidget* pp, int newIndex)
 {
 	int oldIndex = -1;
 	
 	// Find current index
-	for (size_t i = 0; i < perlinPasses.size(); i++)
+	for (size_t i = 0; i < pipelineSteps.size(); i++)
 	{
-		if (perlinPasses[i] == pp)
+		if (pipelineSteps[i] == pp)
 		{
 			oldIndex = i;
 			break;
@@ -127,8 +126,8 @@ void GenerationPipeline::ReorderPerlinPass(PerlinPassWidget* pp, int newIndex)
 	{
 		for (size_t i = oldIndex; i > newIndex; i--)
 		{
-			perlinPasses[i] = perlinPasses[i - 1];
-			perlinPasses[i]->SetPositionComboBox(perlinPasses.size(), i);
+			pipelineSteps[i] = pipelineSteps[i - 1];
+			pipelineSteps[i]->SetPositionComboBox(pipelineSteps.size(), i);
 		}
 		
 	}
@@ -137,30 +136,30 @@ void GenerationPipeline::ReorderPerlinPass(PerlinPassWidget* pp, int newIndex)
 	{
 		for (size_t i = oldIndex; i < newIndex; i++)
 		{
-			perlinPasses[i] = perlinPasses[i + 1];
-			perlinPasses[i]->SetPositionComboBox(perlinPasses.size(), i);
+			pipelineSteps[i] = pipelineSteps[i + 1];
+			pipelineSteps[i]->SetPositionComboBox(pipelineSteps.size(), i);
 		}
 	}
 	
-	perlinPasses[newIndex] = pp;
+	pipelineSteps[newIndex] = pp;
 
 	// Reorder QLayout
 	QLayoutItem* item = ui.perlinPassLayout->takeAt(oldIndex);
 	ui.perlinPassLayout->insertItem(newIndex, item);
 }
 
-void GenerationPipeline::RemovePerlinPass(PerlinPassWidget* pp)
+void GenerationPipeline::RemoveStep(PipelineStepWidget* pp)
 {
-	if (perlinPasses.size() <= 1)
+	if (pipelineSteps.size() <= 1)
 	{
 		QMessageBox::information(nullptr, "Invalid Delete", "Couldn't delete only pass");
 		return;
 	}
 
 	int index = -1;
-	for (size_t i = 0; i < perlinPasses.size(); i++)
+	for (size_t i = 0; i < pipelineSteps.size(); i++)
 	{
-		if (perlinPasses[i] == pp)
+		if (pipelineSteps[i] == pp)
 		{
 			index = i;
 			break;
@@ -169,7 +168,7 @@ void GenerationPipeline::RemovePerlinPass(PerlinPassWidget* pp)
 	if (index == -1)
 		throw std::exception("Did not find pass in index, programming error");
 
-	perlinPasses.erase(std::remove(perlinPasses.begin(), perlinPasses.end(), pp), perlinPasses.end());
+	pipelineSteps.erase(std::remove(pipelineSteps.begin(), pipelineSteps.end(), pp), pipelineSteps.end());
 	QLayoutItem* item = ui.perlinPassLayout->takeAt(index);
 	delete item->widget();
 	delete item;
@@ -185,7 +184,7 @@ void GenerationPipeline::ReadFile(const char* filename, bool outputErrors)
 		delete item->widget();
 		delete item;
 	}
-	perlinPasses.clear();
+	pipelineSteps.clear();
 
 	// Read pipeline data
 	std::ifstream file;
@@ -209,17 +208,8 @@ void GenerationPipeline::ReadFile(const char* filename, bool outputErrors)
 		// Read individual elements
 		while (num_elements > 0)
 		{
-			int objType;
-			file >> objType;
-
-			if (objType == 1)
-			{
-				perlinPasses.push_back(new PerlinPassWidget(file));
-			}
-			else {
-				throw std::invalid_argument("Invalid Object type: " + std::to_string(objType));
-			}
-
+			PipelineStepWidget* w = new PipelineStepWidget(file);
+			pipelineSteps.push_back(w);
 			num_elements--;
 		}
 	}
@@ -235,9 +225,9 @@ void GenerationPipeline::ReadFile(const char* filename, bool outputErrors)
 	file.close();
 
 	// Add items to layout
-	for (size_t i = 0; i < perlinPasses.size(); i++)
+	for (size_t i = 0; i < pipelineSteps.size(); i++)
 	{
-		AddPerlinPass(perlinPasses[i], i, false);
+		AddStep(pipelineSteps[i], i, false);
 	}
 }
 
@@ -247,9 +237,9 @@ void GenerationPipeline::SaveFile(const char* filename)
 	file.open(filename);
 
 	file << ui.sbWidth->value() << " " << ui.sbHeight->value() << std::endl;
-	file << perlinPasses.size() << std::endl;
+	file << pipelineSteps.size() << std::endl;
 
-	for (auto i : perlinPasses)
+	for (auto i : pipelineSteps)
 		i->WriteToFile(file);
 
 	file.close();

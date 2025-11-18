@@ -2,6 +2,8 @@
 
 #include <exception>
 #include <string>
+#include <fstream>
+#include <qspinbox.h>
 
 namespace Utilities
 {
@@ -18,5 +20,19 @@ namespace Utilities
 
 		minContainer = min;
 		maxContainer = max;
+	}
+
+	inline void UpdateSpinboxFromFile(QSpinBox* spinBox, std::ifstream& file)
+	{
+		int val;
+		file >> val;
+		spinBox->setValue(val);
+	}
+
+	inline void UpdateDSBFromFile(QDoubleSpinBox* dsb, std::ifstream& file)
+	{
+		double val;
+		file >> val;
+		dsb->setValue(val);
 	}
 }

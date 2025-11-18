@@ -61,6 +61,12 @@
     <ClCompile Include="Generation\MountainFilterMap.cpp">
       <Filter>Generation</Filter>
     </ClCompile>
+    <ClCompile Include="Widgets\MountainFilterWidget.cpp">
+      <Filter>Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\PipelineStepWidget.cpp">
+      <Filter>Widgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Widgets\MapWidget.h">
@@ -71,6 +77,12 @@
     </QtMoc>
     <QtMoc Include="Generation\GenerationPipeline.h">
       <Filter>Generation</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\MountainFilterWidget.h">
+      <Filter>Widgets</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\PipelineStepWidget.h">
+      <Filter>Widgets</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
@@ -99,6 +111,12 @@
     </QtUic>
     <QtUic Include="Generation\GenerationPipeline.ui">
       <Filter>Generation</Filter>
+    </QtUic>
+    <QtUic Include="Widgets\MountainFilterWidget.ui">
+      <Filter>Widgets</Filter>
+    </QtUic>
+    <QtUic Include="Widgets\PipelineStepWidget.ui">
+      <Filter>Widgets</Filter>
     </QtUic>
   </ItemGroup>
 </Project>

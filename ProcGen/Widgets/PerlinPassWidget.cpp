@@ -3,28 +3,18 @@
 #include <fstream>
 #include "QStringUtilities.h"
 
-PerlinPassWidget::PerlinPassWidget(QString name, int seed, double blockSize, double scale, int numGradients, int perlinRepCount, QWidget* parent) 
-	: QWidget(parent)
+PerlinPassWidget::PerlinPassWidget() 
+	: QWidget(nullptr)
 {
 	ui.setupUi(this);
 
+	int numGradients = 16;
+	int perlinRepCount = 256;
 	perlinPass = new PerlinPass(numGradients, perlinRepCount);
 
-	connect(ui.dropdownButton, &QToolButton::pressed, this, [&]() {
-		dropdownVisible = !dropdownVisible;
-		ui.contentsWidget->setVisible(dropdownVisible);
-
-		if (dropdownVisible)
-			ui.dropdownButton->setArrowType(Qt::UpArrow);
-		else
-			ui.dropdownButton->setArrowType(Qt::DownArrow);
-	});
-	ui.lePassName->setText(QStringUtilities::FromFileQString(name));
-	ui.contentsWidget->setVisible(false);
-
-	ui.sbSeed->setValue(seed);
-	ui.dsbBlockSize->setValue(blockSize);
-	ui.dsbScale->setValue(scale);
+	ui.sbSeed->setValue(0);
+	ui.dsbBlockSize->setValue(64);
+	ui.dsbScale->setValue(0.1);
 	ui.sbNumGrad->setValue(numGradients);
 	ui.sbPerlinRep->setValue(perlinRepCount);
 
@@ -33,15 +23,10 @@ PerlinPassWidget::PerlinPassWidget(QString name, int seed, double blockSize, dou
 	};
 	connect(ui.sbNumGrad, &QSpinBox::valueChanged, this, updatePerlinData);
 	connect(ui.sbPerlinRep, &QSpinBox::valueChanged, this, updatePerlinData);
-
-	connect(ui.cbPosition, &QComboBox::currentIndexChanged, this, &PerlinPassWidget::PositionChanged);
-	connect(ui.pbDelete, &QPushButton::pressed, this, &PerlinPassWidget::Delete);
 }
 
 PerlinPassWidget::PerlinPassWidget(std::ifstream& file) : QWidget(nullptr)
 {
-	std::string name;
-	file >> name;
 	int seed, numGradients, perlinRepCount;
 	double blockSize, scale;
 	file >> seed;
@@ -54,20 +39,6 @@ PerlinPassWidget::PerlinPassWidget(std::ifstream& file) : QWidget(nullptr)
 
 	perlinPass = new PerlinPass(numGradients, perlinRepCount);
 
-	connect(ui.dropdownButton, &QToolButton::pressed, this, [&]() {
-		dropdownVisible = !dropdownVisible;
-		ui.contentsWidget->setVisible(dropdownVisible);
-
-		if (dropdownVisible)
-			ui.dropdownButton->setArrowType(Qt::UpArrow);
-		else
-			ui.dropdownButton->setArrowType(Qt::DownArrow);
-		});
-
-	QString qName = QString(name.c_str());
-	ui.lePassName->setText(QStringUtilities::FromFileQString(qName));
-	ui.contentsWidget->setVisible(false);
-
 	ui.sbSeed->setValue(seed);
 	ui.dsbBlockSize->setValue(blockSize);
 	ui.dsbScale->setValue(scale);
@@ -79,16 +50,11 @@ PerlinPassWidget::PerlinPassWidget(std::ifstream& file) : QWidget(nullptr)
 		};
 	connect(ui.sbNumGrad, &QSpinBox::valueChanged, this, updatePerlinData);
 	connect(ui.sbPerlinRep, &QSpinBox::valueChanged, this, updatePerlinData);
-
-	connect(ui.cbPosition, &QComboBox::currentIndexChanged, this, &PerlinPassWidget::PositionChanged);
-	connect(ui.pbDelete, &QPushButton::pressed, this, &PerlinPassWidget::Delete);
 }
 
 void PerlinPassWidget::WriteToFile(std::ofstream& file)
 {
-	file << "1\n";
-	QString name = ui.lePassName->text();
-	file << QStringUtilities::ToFileQString(name).toStdString() + " ";
+	file << "\t\t1 ";
 	file << ui.sbSeed->value() << " " << ui.sbNumGrad->value() << " " << ui.sbPerlinRep->value() << " " << ui.dsbBlockSize->value() << " " << ui.dsbScale->value() << "\n";
 }
 
@@ -97,27 +63,8 @@ PerlinPassWidget::~PerlinPassWidget()
 	delete perlinPass;
 }
 
-float* PerlinPassWidget::GetPassOutput(int width, int height)
+void PerlinPassWidget::GetPassOutput(int width, int height, float* data)
 {
-	return perlinPass->GenerateMap(ui.sbSeed->value(), width, height, ui.dsbBlockSize->value(), ui.dsbScale->value());
+	perlinPass->GenerateMap(ui.sbSeed->value(), width, height, ui.dsbBlockSize->value(), ui.dsbScale->value(), data);
 }
 
-void PerlinPassWidget::SetPositionComboBox(int length, int index)
-{
-	ui.cbPosition->blockSignals(true);
-	
-	if (dropdownLength != length)
-	{
-		dropdownLength = length;
-
-		ui.cbPosition->clear();
-		for (int i = 0; i < dropdownLength; i++)
-		{
-			ui.cbPosition->addItem(QString::number(i + 1), i);
-		}
-	}
-
-	ui.cbPosition->setCurrentIndex(index);
-
-	ui.cbPosition->blockSignals(false);
-}

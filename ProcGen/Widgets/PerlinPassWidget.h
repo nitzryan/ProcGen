@@ -8,18 +8,14 @@ class PerlinPassWidget : public QWidget
 	Q_OBJECT
 
 public:
-	PerlinPassWidget(QString name, int seed, double blockSize, double scale, int numGradients, int perlinRepCount, QWidget* parent = nullptr);
+	PerlinPassWidget();
 	
 	~PerlinPassWidget();
 
 	PerlinPassWidget(std::ifstream& file);
 	void WriteToFile(std::ofstream& file);
 
-	float* GetPassOutput(int width, int height);
-	void SetPositionComboBox(int length, int index);
-signals:
-	void PositionChanged(int index);
-	void Delete();
+	void GetPassOutput(int width, int height, float* data);
 private:
 	Ui::PerlinPassWidget ui;
 	PerlinPass* perlinPass;

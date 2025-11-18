@@ -19,10 +19,9 @@ public:
 	PerlinPass(int numGradients, int perlinRepCount);
 	void Reinitialize(int numGradients, int perlinRepCount);
 
-	float* GenerateMap(int seed, int width, int height, double blockSize, double outputScale);
+	void GenerateMap(int seed, int width, int height, double blockSize, double outputScale, float* data);
 private:
 	int width, height;
-	std::vector<float> output;
 	std::vector<int> permutationArray;
 	std::vector<int> p;
 	std::vector<Vector2D> pointGradients;

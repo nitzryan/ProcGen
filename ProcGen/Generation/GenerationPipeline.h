@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <Widgets/PerlinPassWidget.h>
+#include <Widgets/PipelineStepWidget.h>
 #include <QWidget>
 #include <ui_GenerationPipeline.h>
 
@@ -17,11 +17,11 @@ signals:
 	void PipelineOutput(int width, int height, QList<uchar> data);
 private:
 	Ui::GenerationPipeline ui;
-	std::vector<PerlinPassWidget*> perlinPasses;
+	std::vector<PipelineStepWidget*> pipelineSteps;
 
-	void AddPerlinPass(PerlinPassWidget* pp, int index, bool updateAll);
-	void ReorderPerlinPass(PerlinPassWidget* pp, int newIndex);
-	void RemovePerlinPass(PerlinPassWidget* pp);
+	void AddStep(PipelineStepWidget* pp, int index, bool updateAll);
+	void ReorderStep(PipelineStepWidget* pp, int newIndex);
+	void RemoveStep(PipelineStepWidget* pp);
 	void ReadFile(const char* filename, bool outputErrors);
 	void SaveFile(const char* filename);
 };

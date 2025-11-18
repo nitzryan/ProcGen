@@ -21,13 +21,10 @@ void MountainFilterMap::SetArgs(MountainFilterMapArgs& a)
 	Utilities::SetMinMax(args.minBend, args.maxBend, a.minBend, a.maxBend, "Bend Amount");
 	Utilities::SetMinMax(args.minScale, args.maxScale, a.minScale, a.maxScale, "Range Scale");
 	Utilities::SetMinMax(args.minRangeMult, args.maxRangeMult, a.minRangeMult, a.maxRangeMult, "Range Multiplier");
-	if (a.lengthPerBend < 0)
-		throw new std::exception("Length Per Bend < 0");
-
-	args.lengthPerBend = a.lengthPerBend;
+	Utilities::SetMinMax(args.minBendFreq, args.maxBendFreq, a.minBendFreq, a.maxBendFreq, "Bend Frequency");
 }
 
-void MountainFilterMap::GenMap()
+void MountainFilterMap::GenMap(float* data)
 {
 	if (!args.IsValid())
 	{
