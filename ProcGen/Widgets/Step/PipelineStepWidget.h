@@ -4,20 +4,21 @@
 #include "ui_PipelineStepWidget.h"
 
 #include <Widgets/Passes/IPassWidget.h>
-#include <Widgets/Filters/Mountain/MountainFilterWidget.h>
+#include <Widgets/Filters/IFilterWidget.h>
+#include <Generation/MapDimensions.h>
 
 class PipelineStepWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	PipelineStepWidget();
-	PipelineStepWidget(std::ifstream& file);
+	PipelineStepWidget(const MapDimensions* md);
+	PipelineStepWidget(std::ifstream& file, const MapDimensions* md);
 	~PipelineStepWidget();
 
 	void WriteToFile(std::ofstream& file);
 
-	float* GetPassOutput(int width, int height);
+	float* GetPassOutput();
 	void SetPositionComboBox(int length, int index);
 signals:
 	void PositionChanged(int index);
@@ -28,8 +29,9 @@ private:
 	float* stepData = nullptr;
 	float* filterData = nullptr;
 	int dropdownLength = 0;
+	const MapDimensions* mapDimensions;
 
 	std::vector<IPassWidget*> passes;
-	std::vector<MountainFilterWidget*> filters;
+	std::vector<IFilterWidget*> filters;
 };
 

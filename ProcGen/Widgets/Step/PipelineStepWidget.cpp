@@ -6,15 +6,17 @@
 #include <Widgets/Passes/Offset/OffsetPass.h>
 #include <Widgets/Filters/Mountain/MountainFilterWidget.h>
 
-PipelineStepWidget::PipelineStepWidget()
+PipelineStepWidget::PipelineStepWidget(const MapDimensions* md)
+	: mapDimensions(md)
 {
 	ui.setupUi(this);
-	passes.push_back(new PerlinPassWidget());
+	passes.push_back(new PerlinPassWidget(mapDimensions));
 
 	SetupWidget();
 }
 
-PipelineStepWidget::PipelineStepWidget(std::ifstream& file)
+PipelineStepWidget::PipelineStepWidget(std::ifstream& file, const MapDimensions* md)
+	: mapDimensions(md)
 {
 	ui.setupUi(this);
 
@@ -38,10 +40,10 @@ PipelineStepWidget::PipelineStepWidget(std::ifstream& file)
 		switch (elementType)
 		{
 		case static_cast<int>(IPassWidgetNS::PASS_TYPE::PERLIN):
-			passes.push_back(new PerlinPassWidget(file));
+			passes.push_back(new PerlinPassWidget(file, mapDimensions));
 			break;
 		case static_cast<int>(IPassWidgetNS::PASS_TYPE::OFFSET):
-			passes.push_back(new OffsetPass(file));
+			passes.push_back(new OffsetPass(file, mapDimensions));
 			break;
 		default:
 			throw std::exception("Invalid element type received at PipelineStepWidget");
@@ -60,7 +62,7 @@ PipelineStepWidget::PipelineStepWidget(std::ifstream& file)
 			file >> filterType;
 			if (filterType == 1)
 			{
-				MountainFilterWidget* w = new MountainFilterWidget(file);
+				MountainFilterWidget* w = new MountainFilterWidget(file, mapDimensions);
 				filters.push_back(w);
 			}
 			else 
@@ -98,8 +100,11 @@ void PipelineStepWidget::WriteToFile(std::ofstream& file)
 		f->WriteToFile(file);
 }
 
-float* PipelineStepWidget::GetPassOutput(int width, int height)
+float* PipelineStepWidget::GetPassOutput()
 {
+	int width = mapDimensions->width;
+	int height = mapDimensions->height;
+
 	if (stepData != nullptr)
 		delete stepData;
 	stepData = new float[width * height];
@@ -107,7 +112,7 @@ float* PipelineStepWidget::GetPassOutput(int width, int height)
 		stepData[i] = 0;
 	
 	for (auto p : passes)
-		p->GetPassOutput(width, height, stepData);
+		p->GetPassOutput(stepData);
 
 	if (filterData != nullptr)
 		delete filterData;
@@ -117,7 +122,7 @@ float* PipelineStepWidget::GetPassOutput(int width, int height)
 
 	for (auto f : filters)
 	{
-		f->GetOuput(width, height, filterData);
+		f->GetOutput(filterData);
 	}
 
 	if (!filters.empty())

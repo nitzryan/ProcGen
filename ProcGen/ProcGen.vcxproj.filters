@@ -122,6 +122,12 @@
     <ClInclude Include="Widgets\Passes\IPassWidget.h">
       <Filter>Widgets</Filter>
     </ClInclude>
+    <ClInclude Include="Generation\MapDimensions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Widgets\Filters\IFilterWidget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="Widgets\Passes\Perlin\PerlinPassWidget.ui">

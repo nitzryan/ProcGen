@@ -1,8 +1,8 @@
 #include "OffsetPass.h"
 #include <fstream>
 
-OffsetPass::OffsetPass()
-	: IPassWidget()
+OffsetPass::OffsetPass(const MapDimensions* md)
+	: IPassWidget(md)
 {
 	ui.setupUi(this);
 
@@ -12,7 +12,8 @@ OffsetPass::OffsetPass()
 OffsetPass::~OffsetPass()
 {}
 
-OffsetPass::OffsetPass(std::ifstream & file) : IPassWidget()
+OffsetPass::OffsetPass(std::ifstream & file, const MapDimensions* md) 
+	: IPassWidget(md)
 {
 	ui.setupUi(this);
 	
@@ -27,10 +28,10 @@ void OffsetPass::WriteToFile(std::ofstream& file) const
 	file << "\t\t\t" << static_cast<int>(IPassWidgetNS::PASS_TYPE::OFFSET) << " " << ui.dsbOffset->value();
 }
 
-void OffsetPass::GetPassOutput(int width, int height, float* data)
+void OffsetPass::GetPassOutput(float* data)
 {
 	double offset = ui.dsbOffset->value();
-	for (int i = 0; i < width * height; i++)
+	for (int i = 0; i < mapDimensions->width * mapDimensions->height; i++)
 		data[i] += offset;
 }
 

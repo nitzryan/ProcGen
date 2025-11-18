@@ -57,7 +57,7 @@ GenerationPipeline::GenerationPipeline(QWidget* parent) : QWidget(parent)
 		try {
 			for (auto ps : pipelineSteps)
 			{
-				auto passResults = ps->GetPassOutput(width, height);
+				auto passResults = ps->GetPassOutput();
 				for (size_t i = 0; i < width * height; i++)
 					data[i] += passResults[i];
 			}
@@ -76,10 +76,22 @@ GenerationPipeline::GenerationPipeline(QWidget* parent) : QWidget(parent)
 	});
 
 	connect(ui.pbAddPerlinPass, &QPushButton::pressed, this, [&]() {
-		PipelineStepWidget* psw = new PipelineStepWidget();
+		PipelineStepWidget* psw = new PipelineStepWidget(&mapDimensions);
 		pipelineSteps.push_back(psw);
 		AddStep(psw, -1, true);
 	});
+
+	// Map width/height
+	connect(ui.sbWidth, &QSpinBox::valueChanged, this, [&](int value)
+	{
+		mapDimensions.width = value;
+	});
+	connect(ui.sbHeight, &QSpinBox::valueChanged, this, [&](int value)
+	{
+		mapDimensions.height = value;
+	});
+	mapDimensions.width = ui.sbWidth->value();
+	mapDimensions.height = ui.sbHeight->value();
 }
 
 GenerationPipeline::~GenerationPipeline()
@@ -214,7 +226,7 @@ void GenerationPipeline::ReadFile(const char* filename, bool outputErrors)
 		// Read individual elements
 		while (num_elements > 0)
 		{
-			PipelineStepWidget* w = new PipelineStepWidget(file);
+			PipelineStepWidget* w = new PipelineStepWidget(file, &mapDimensions);
 			pipelineSteps.push_back(w);
 			num_elements--;
 		}

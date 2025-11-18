@@ -2,18 +2,19 @@
 
 #include "ui_MountainFilterWidget.h"
 #include <Generation/Mountain/MountainFilterMap.h>
+#include <Widgets/Filters/IFilterWidget.h>
 
-class MountainFilterWidget : public QWidget
+class MountainFilterWidget : public IFilterWidget
 {
 	Q_OBJECT
 
 public:
 	~MountainFilterWidget();
 
-	MountainFilterWidget();
-	MountainFilterWidget(std::ifstream& file);
-	void WriteToFile(std::ofstream& file);
-	void GetOuput(int width, int height, float* data);
+	MountainFilterWidget(const MapDimensions* md);
+	MountainFilterWidget(std::ifstream& file, const MapDimensions* md);
+	void WriteToFile(std::ofstream& file) const override;
+	void GetOutput(float* data) override;
 
 signals:
 

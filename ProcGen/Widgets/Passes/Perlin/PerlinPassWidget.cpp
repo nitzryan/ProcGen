@@ -3,8 +3,8 @@
 #include <fstream>
 #include <Widgets/QStringUtilities.h>
 
-PerlinPassWidget::PerlinPassWidget() 
-	: IPassWidget()
+PerlinPassWidget::PerlinPassWidget(const MapDimensions* md)
+	: IPassWidget(md)
 {
 	ui.setupUi(this);
 
@@ -25,7 +25,8 @@ PerlinPassWidget::PerlinPassWidget()
 	connect(ui.sbPerlinRep, &QSpinBox::valueChanged, this, updatePerlinData);
 }
 
-PerlinPassWidget::PerlinPassWidget(std::ifstream& file) : IPassWidget()
+PerlinPassWidget::PerlinPassWidget(std::ifstream& file, const MapDimensions* md) 
+	: IPassWidget(md)
 {
 	int seed, numGradients, perlinRepCount;
 	double blockSize, scale;
@@ -63,8 +64,8 @@ PerlinPassWidget::~PerlinPassWidget()
 	delete perlinPass;
 }
 
-void PerlinPassWidget::GetPassOutput(int width, int height, float* data)
+void PerlinPassWidget::GetPassOutput(float* data)
 {
-	perlinPass->GenerateMap(ui.sbSeed->value(), width, height, ui.dsbBlockSize->value(), ui.dsbScale->value(), data);
+	perlinPass->GenerateMap(ui.sbSeed->value(), mapDimensions->width, mapDimensions->height, ui.dsbBlockSize->value(), ui.dsbScale->value(), data);
 }
 

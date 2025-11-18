@@ -4,6 +4,7 @@
 #include <Widgets/Step/PipelineStepWidget.h>
 #include <QWidget>
 #include <ui_GenerationPipeline.h>
+#include <Generation/MapDimensions.h>
 
 class GenerationPipeline : public QWidget
 {
@@ -17,6 +18,7 @@ signals:
 	void PipelineOutput(int width, int height, QList<uchar> data);
 private:
 	Ui::GenerationPipeline ui;
+	MapDimensions mapDimensions;
 	std::vector<PipelineStepWidget*> pipelineSteps;
 
 	void AddStep(PipelineStepWidget* pp, int index, bool updateAll);

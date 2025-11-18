@@ -6,7 +6,8 @@
 MountainFilterWidget::~MountainFilterWidget()
 {}
 
-MountainFilterWidget::MountainFilterWidget()
+MountainFilterWidget::MountainFilterWidget(const MapDimensions* md) 
+	: IFilterWidget(md)
 {
 	ui.setupUi(this);
 	
@@ -34,7 +35,8 @@ MountainFilterWidget::MountainFilterWidget()
 	UpdateFilterMap();
 }
 
-MountainFilterWidget::MountainFilterWidget(std::ifstream & file)
+MountainFilterWidget::MountainFilterWidget(std::ifstream & file, const MapDimensions* md)
+	: IFilterWidget(md)
 {
 	ui.setupUi(this);
 	
@@ -57,7 +59,7 @@ MountainFilterWidget::MountainFilterWidget(std::ifstream & file)
 	UpdateFilterMap();
 }
 
-void MountainFilterWidget::WriteToFile(std::ofstream& file)
+void MountainFilterWidget::WriteToFile(std::ofstream& file) const
 {
 	file << "\t\t" << 1 << " ";
 	file << ui.sbSeed->value() << " ";
@@ -77,11 +79,11 @@ void MountainFilterWidget::WriteToFile(std::ofstream& file)
 	file << ui.dsbMultMax->value() << "\n";
 }
 
-void MountainFilterWidget::GetOuput(int width, int height, float* data)
+void MountainFilterWidget::GetOutput(float* data)
 {
 	UpdateFilterMap();
 	
-	map.GenerateMap(width, height, ui.sbSeed->value(), data);
+	map.GenerateMap(mapDimensions->width, mapDimensions->height, ui.sbSeed->value(), data);
 }
 
 void MountainFilterWidget::UpdateFilterMap()

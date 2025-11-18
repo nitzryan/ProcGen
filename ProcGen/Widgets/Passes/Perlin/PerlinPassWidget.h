@@ -9,14 +9,14 @@ class PerlinPassWidget : public IPassWidget
 	Q_OBJECT
 
 public:
-	PerlinPassWidget();
+	PerlinPassWidget(const MapDimensions* md);
 	
 	~PerlinPassWidget();
 
-	PerlinPassWidget(std::ifstream& file);
+	PerlinPassWidget(std::ifstream& file, const MapDimensions* md);
 	void WriteToFile(std::ofstream& file) const override final;
 
-	void GetPassOutput(int width, int height, float* data) override final;
+	void GetPassOutput(float* data) override final;
 private:
 	Ui::PerlinPassWidget ui;
 	PerlinPass* perlinPass;

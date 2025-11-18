@@ -121,6 +121,8 @@
     <ClInclude Include="Utilities.h" />
     <QtMoc Include="Widgets\Filters\Mountain\MountainFilterWidget.h" />
     <QtMoc Include="Widgets\Step\PipelineStepWidget.h" />
+    <ClInclude Include="Generation\MapDimensions.h" />
+    <ClInclude Include="Widgets\Filters\IFilterWidget.h" />
     <ClInclude Include="Widgets\Passes\IPassWidget.h" />
     <QtMoc Include="Widgets\Passes\Offset\OffsetPass.h" />
     <ClInclude Include="Widgets\QStringUtilities.h" />

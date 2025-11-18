@@ -9,12 +9,12 @@ class OffsetPass : public IPassWidget
 	Q_OBJECT
 
 public:
-	OffsetPass();
+	OffsetPass(const MapDimensions* md);
 	~OffsetPass();
 
-	OffsetPass(std::ifstream& file);
+	OffsetPass(std::ifstream& file, const MapDimensions* md);
 	void WriteToFile(std::ofstream& file) const override final;
-	void GetPassOutput(int width, int height, float* data) override final;
+	void GetPassOutput(float* data) override final;
 private:
 	Ui::OffsetPassClass ui;
 };

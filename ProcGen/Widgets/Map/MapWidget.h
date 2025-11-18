@@ -6,8 +6,6 @@
 #include <qboxlayout.h>
 #include <qlabel.h>
 
-
-
 class MapWidget : public QWidget
 {
 	Q_OBJECT
