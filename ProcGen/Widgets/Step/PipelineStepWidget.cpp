@@ -86,10 +86,10 @@ PipelineStepWidget::~PipelineStepWidget()
 		delete filter;
 
 	if (stepData != nullptr)
-		delete stepData;
+		delete[] stepData;
 
 	if (filterData != nullptr)
-		delete filterData;
+		delete[] filterData;
 }
 
 void PipelineStepWidget::WriteToFile(std::ofstream& file)
@@ -110,7 +110,7 @@ float* PipelineStepWidget::GetPassOutput()
 	int height = mapDimensions->height;
 
 	if (stepData != nullptr)
-		delete stepData;
+		delete[] stepData;
 	stepData = new float[width * height];
 	for (int i = 0; i < width * height; i++)
 		stepData[i] = 0;
@@ -119,7 +119,7 @@ float* PipelineStepWidget::GetPassOutput()
 		p->GetPassOutput(stepData);
 
 	if (filterData != nullptr)
-		delete filterData;
+		delete[] filterData;
 	filterData = new float[width * height];
 	for (size_t i = 0; i < width * height; i++)
 		filterData[i] = 0;
@@ -160,6 +160,7 @@ void PipelineStepWidget::SetPositionComboBox(int length, int index)
 
 void PipelineStepWidget::SetupWidget()
 {
+	// Layout of steps
 	connect(ui.cbPosition, &QComboBox::currentIndexChanged, this, &PipelineStepWidget::PositionChanged);
 	connect(ui.pbDelete, &QPushButton::pressed, this, &PipelineStepWidget::Delete);
 
@@ -168,6 +169,7 @@ void PipelineStepWidget::SetupWidget()
 	for (auto f : filters)
 		ui.filterWidget->layout()->addWidget(f);
 
+	// Dropdown visibility
 	connect(ui.dropdownButton, &QToolButton::pressed, this, [&]() {
 		contentsVisible = !contentsVisible;
 
@@ -187,6 +189,49 @@ void PipelineStepWidget::SetupWidget()
 	ui.filterWidget->setVisible(contentsVisible);
 	ui.passWidget->setVisible(contentsVisible);
 	ui.viewWidget->setVisible(contentsVisible);
+
+	// View Specific parts of step
+	connect(ui.pbViewPerlin, &QPushButton::pressed, this, [&]() {
+		std::shared_ptr<float[]> data(new float[mapDimensions->width * mapDimensions->height]());
+		for (auto p : passes)
+			p->GetPassOutput(data.get());
+		MapData md;
+		md.heightmap = data;
+		md.dimensions = *mapDimensions;
+		emit OutputPassData(md);
+	});
+
+	connect(ui.pbViewFilters, &QPushButton::pressed, this, [&]() {
+		std::shared_ptr<float[]> data(new float[mapDimensions->width * mapDimensions->height]());
+		for (auto f : filters)
+			f->GetOutput(data.get());
+		MapData md;
+		md.heightmap = data;
+		md.dimensions = *mapDimensions;
+		emit OutputPassData(md);
+	});
+
+	connect(ui.pbViewCombined, &QPushButton::pressed, this, [&]() {
+		std::shared_ptr<float[]> data(new float[mapDimensions->width * mapDimensions->height]());
+		float* filterData = new float[mapDimensions->width * mapDimensions->height]();
+		for (auto p : passes)
+			p->GetPassOutput(data.get());
+		for (auto f : filters)
+			f->GetOutput(filterData);
+
+
+		if (!filters.empty())
+		{
+			for (int i = 0; i < mapDimensions->width * mapDimensions->height; i++)
+				data[i] *= filterData[i];
+		}
+
+		delete[] filterData;
+		MapData md;
+		md.heightmap = data;
+		md.dimensions = *mapDimensions;
+		emit OutputPassData(md);
+	});
 }
 
 
