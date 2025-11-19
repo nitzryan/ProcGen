@@ -37,12 +37,15 @@ void MapWidget::GenerateMap(int width, int height, QList<uchar> data)
 	this->update();
 }
 
-void MapWidget::GenerateMap2(std::shared_ptr<float[]> data, const MapDimensions* md)
+void MapWidget::GenerateMap2(MapData mapData)
 {
-	std::vector<uchar> pixelData(md->width * md->height);
-	for (int i = 0; i < md->width * md->height; i++)
-		pixelData[i] = 255.0f * data[i];
-	QImage image = QImage(pixelData.data(), md->width, md->height, md->width, QImage::Format_Grayscale8);
+	int width = mapData.dimensions.width;
+	int height = mapData.dimensions.height;
+
+	std::vector<uchar> pixelData(width * height);
+	for (int i = 0; i < width * height; i++)
+		pixelData[i] = 255.0f * mapData.heightmap[i];
+	QImage image = QImage(pixelData.data(), width, height, width, QImage::Format_Grayscale8);
 
 	if (mapLabel != nullptr)
 	{
@@ -51,7 +54,7 @@ void MapWidget::GenerateMap2(std::shared_ptr<float[]> data, const MapDimensions*
 	}
 
 	mapLabel = new QLabel(this);
-	mapLabel->setFixedSize(md->width, md->height);
+	mapLabel->setFixedSize(width, height);
 	mapLabel->setScaledContents(true);
 	mapLabel->setPixmap(QPixmap::fromImage(image));
 	mapLabel->show();

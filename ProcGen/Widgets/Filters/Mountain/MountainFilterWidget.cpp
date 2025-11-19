@@ -32,6 +32,8 @@ MountainFilterWidget::MountainFilterWidget(const MapDimensions* md)
 	ui.dsbMultMin->setValue(1.0);
 	ui.dsbMultMax->setValue(3.0);
 
+	connect(ui.pbView, &QPushButton::pressed, this, &IFilterWidget::EmitPassOutput);
+
 	UpdateFilterMap();
 }
 
@@ -55,6 +57,8 @@ MountainFilterWidget::MountainFilterWidget(std::ifstream & file, const MapDimens
 	Utilities::UpdateDSBFromFile(ui.dsbScaleMax, file);
 	Utilities::UpdateDSBFromFile(ui.dsbMultMin, file);
 	Utilities::UpdateDSBFromFile(ui.dsbMultMax, file);
+
+	connect(ui.pbView, &QPushButton::pressed, this, &IFilterWidget::EmitPassOutput);
 
 	UpdateFilterMap();
 }

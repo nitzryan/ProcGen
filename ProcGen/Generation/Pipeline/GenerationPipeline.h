@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <ui_GenerationPipeline.h>
 #include <Generation/MapDimensions.h>
+#include <Generation/MapData.h>
 
 class GenerationPipeline : public QWidget
 {
@@ -16,7 +17,7 @@ public:
 
 signals:
 	void PipelineOutput(int width, int height, QList<uchar> data);
-	void OutputPassData(std::shared_ptr<float[]> data, const MapDimensions* md);
+	void OutputPassData(MapData mapData);
 private:
 	Ui::GenerationPipeline ui;
 	MapDimensions mapDimensions;

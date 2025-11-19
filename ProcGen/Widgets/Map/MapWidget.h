@@ -6,6 +6,7 @@
 #include <qboxlayout.h>
 #include <qlabel.h>
 #include <Generation/MapDimensions.h>
+#include <Generation/MapData.h>
 
 class MapWidget : public QWidget
 {
@@ -16,7 +17,7 @@ public:
 	~MapWidget();
 
 	void GenerateMap(int width, int height, QList<uchar> data);
-	void GenerateMap2(std::shared_ptr<float[]> data, const MapDimensions* md);
+	void GenerateMap2(MapData mapData);
 	
 private:
 

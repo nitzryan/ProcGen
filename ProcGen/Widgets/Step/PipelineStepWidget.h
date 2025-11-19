@@ -6,6 +6,7 @@
 #include <Widgets/Passes/IPassWidget.h>
 #include <Widgets/Filters/IFilterWidget.h>
 #include <Generation/MapDimensions.h>
+#include <Generation/MapData.h>
 
 class PipelineStepWidget : public QWidget
 {
@@ -23,7 +24,7 @@ public:
 signals:
 	void PositionChanged(int index);
 	void Delete();
-	void OutputPassData(std::shared_ptr<float[]> data, const MapDimensions* md);
+	void OutputPassData(MapData mapData);
 	
 private:
 	Ui::PipelineStepWidgetClass ui;
@@ -35,7 +36,5 @@ private:
 
 	std::vector<IPassWidget*> passes;
 	std::vector<IFilterWidget*> filters;
-
-	void OutputPassSlot(std::shared_ptr<float[]> data, const MapDimensions* md);
 };
 

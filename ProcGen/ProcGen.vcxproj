@@ -116,14 +116,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Generation\IFilterMap.h" />
+    <ClInclude Include="Generation\MapData.h" />
     <ClInclude Include="Generation\Mountain\MountainFilterMap.h" />
     <ClInclude Include="QSettingsSingleton.h" />
     <ClInclude Include="Utilities.h" />
     <QtMoc Include="Widgets\Filters\Mountain\MountainFilterWidget.h" />
     <QtMoc Include="Widgets\Step\PipelineStepWidget.h" />
     <ClInclude Include="Generation\MapDimensions.h" />
-    <ClInclude Include="Widgets\Filters\IFilterWidget.h" />
-    <ClInclude Include="Widgets\Passes\IPassWidget.h" />
+    <QtMoc Include="Widgets\Filters\IFilterWidget.h" />
+    <QtMoc Include="Widgets\Passes\IPassWidget.h" />
     <QtMoc Include="Widgets\Passes\Offset\OffsetPass.h" />
     <ClInclude Include="Widgets\QStringUtilities.h" />
     <QtMoc Include="Generation\Pipeline\GenerationPipeline.h" />

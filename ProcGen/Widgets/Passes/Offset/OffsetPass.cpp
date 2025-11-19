@@ -7,6 +7,7 @@ OffsetPass::OffsetPass(const MapDimensions* md)
 	ui.setupUi(this);
 
 	ui.dsbOffset->setValue(0);
+	connect(ui.pbView, &QPushButton::pressed, this, &IPassWidget::EmitPassOutput);
 }
 
 OffsetPass::~OffsetPass()
@@ -21,6 +22,9 @@ OffsetPass::OffsetPass(std::ifstream & file, const MapDimensions* md)
 	file >> offsetAmount;
 
 	ui.dsbOffset->setValue(offsetAmount);
+
+	// View only this step
+	connect(ui.pbView, &QPushButton::pressed, this, &IPassWidget::EmitPassOutput);
 }
 
 void OffsetPass::WriteToFile(std::ofstream& file) const

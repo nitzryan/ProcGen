@@ -3,6 +3,7 @@
 #include <ui_PerlinPassWidget.h>
 #include <Generation/Perlin/PerlinPass.h>
 #include <Widgets/Passes/IPassWidget.h>
+#include <Generation/MapData.h>
 
 class PerlinPassWidget : public IPassWidget
 {
@@ -18,8 +19,6 @@ public:
 
 	void GetPassOutput(float* data) override final;
 
-signals:
-	void OutputPassData(std::shared_ptr<float[]> data, const MapDimensions* md);
 private:
 	Ui::PerlinPassWidget ui;
 	PerlinPass* perlinPass;

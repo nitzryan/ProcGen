@@ -99,6 +99,12 @@
     <QtMoc Include="Widgets\Passes\Offset\OffsetPass.h">
       <Filter>Widgets</Filter>
     </QtMoc>
+    <QtMoc Include="Widgets\Passes\IPassWidget.h">
+      <Filter>Widgets</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\Filters\IFilterWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Generation\Perlin\PerlinPass.h">
@@ -119,13 +125,10 @@
     <ClInclude Include="Utilities.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Widgets\Passes\IPassWidget.h">
-      <Filter>Widgets</Filter>
-    </ClInclude>
     <ClInclude Include="Generation\MapDimensions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Widgets\Filters\IFilterWidget.h">
+    <ClInclude Include="Generation\MapData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
