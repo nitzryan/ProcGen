@@ -77,6 +77,7 @@ GenerationPipeline::GenerationPipeline(QWidget* parent) : QWidget(parent)
 
 	connect(ui.pbAddPerlinPass, &QPushButton::pressed, this, [&]() {
 		PipelineStepWidget* psw = new PipelineStepWidget(&mapDimensions);
+		connect(psw, &PipelineStepWidget::OutputPassData, this, &GenerationPipeline::OutputPassData);
 		pipelineSteps.push_back(psw);
 		AddStep(psw, -1, true);
 	});
@@ -227,6 +228,7 @@ void GenerationPipeline::ReadFile(const char* filename, bool outputErrors)
 		while (num_elements > 0)
 		{
 			PipelineStepWidget* w = new PipelineStepWidget(file, &mapDimensions);
+			connect(w, &PipelineStepWidget::OutputPassData, this, &GenerationPipeline::OutputPassData);
 			pipelineSteps.push_back(w);
 			num_elements--;
 		}

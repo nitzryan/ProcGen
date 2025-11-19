@@ -8,6 +8,7 @@ ProcGen::ProcGen(QWidget *parent)
     ui.setupUi(this);
 
     connect(ui.pipeline, &GenerationPipeline::PipelineOutput, ui.mapWidget, &MapWidget::GenerateMap);
+    connect(ui.pipeline, &GenerationPipeline::OutputPassData, ui.mapWidget, &MapWidget::GenerateMap2);
 }
 
 ProcGen::~ProcGen()

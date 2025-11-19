@@ -11,6 +11,7 @@ PipelineStepWidget::PipelineStepWidget(const MapDimensions* md)
 {
 	ui.setupUi(this);
 	passes.push_back(new PerlinPassWidget(mapDimensions));
+	connect((PerlinPassWidget*)passes.back(), &PerlinPassWidget::OutputPassData, this, &PipelineStepWidget::OutputPassSlot);
 
 	SetupWidget();
 }
@@ -41,9 +42,11 @@ PipelineStepWidget::PipelineStepWidget(std::ifstream& file, const MapDimensions*
 		{
 		case static_cast<int>(IPassWidgetNS::PASS_TYPE::PERLIN):
 			passes.push_back(new PerlinPassWidget(file, mapDimensions));
+			connect((PerlinPassWidget*)passes.back(), &PerlinPassWidget::OutputPassData, this, &PipelineStepWidget::OutputPassSlot);
 			break;
 		case static_cast<int>(IPassWidgetNS::PASS_TYPE::OFFSET):
 			passes.push_back(new OffsetPass(file, mapDimensions));
+			connect((OffsetPass*)passes.back(), &OffsetPass::OutputPassData, this, &PipelineStepWidget::OutputPassSlot);
 			break;
 		default:
 			throw std::exception("Invalid element type received at PipelineStepWidget");
@@ -163,5 +166,10 @@ void PipelineStepWidget::SetupWidget()
 		ui.perlinPassLayout->addWidget(p);
 	for (auto f : filters)
 		ui.filtersLayout->addWidget(f);
+}
+
+void PipelineStepWidget::OutputPassSlot(std::shared_ptr<float[]> data, const MapDimensions* md)
+{
+	emit OutputPassData(data, md);
 }
 

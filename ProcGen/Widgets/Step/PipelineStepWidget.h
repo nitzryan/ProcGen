@@ -23,6 +23,8 @@ public:
 signals:
 	void PositionChanged(int index);
 	void Delete();
+	void OutputPassData(std::shared_ptr<float[]> data, const MapDimensions* md);
+	
 private:
 	Ui::PipelineStepWidgetClass ui;
 	void SetupWidget();
@@ -33,5 +35,7 @@ private:
 
 	std::vector<IPassWidget*> passes;
 	std::vector<IFilterWidget*> filters;
+
+	void OutputPassSlot(std::shared_ptr<float[]> data, const MapDimensions* md);
 };
 

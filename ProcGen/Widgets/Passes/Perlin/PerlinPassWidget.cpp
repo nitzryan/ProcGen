@@ -23,6 +23,13 @@ PerlinPassWidget::PerlinPassWidget(const MapDimensions* md)
 	};
 	connect(ui.sbNumGrad, &QSpinBox::valueChanged, this, updatePerlinData);
 	connect(ui.sbPerlinRep, &QSpinBox::valueChanged, this, updatePerlinData);
+
+	// Handle viewing only this step
+	connect(ui.pbView, &QPushButton::pressed, this, [&]() {
+		std::shared_ptr<float[]> data(new float[mapDimensions->width * mapDimensions->height]());
+		GetPassOutput(data.get());
+		emit OutputPassData(data, mapDimensions);
+	});
 }
 
 PerlinPassWidget::PerlinPassWidget(std::ifstream& file, const MapDimensions* md) 
@@ -51,6 +58,13 @@ PerlinPassWidget::PerlinPassWidget(std::ifstream& file, const MapDimensions* md)
 		};
 	connect(ui.sbNumGrad, &QSpinBox::valueChanged, this, updatePerlinData);
 	connect(ui.sbPerlinRep, &QSpinBox::valueChanged, this, updatePerlinData);
+
+	// Handle viewing only this step
+	connect(ui.pbView, &QPushButton::pressed, this, [&]() {
+		std::shared_ptr<float[]> data(new float[mapDimensions->width * mapDimensions->height]());
+		GetPassOutput(data.get());
+		emit OutputPassData(data, mapDimensions);
+		});
 }
 
 void PerlinPassWidget::WriteToFile(std::ofstream& file) const
