@@ -32,6 +32,7 @@ private:
 	float* stepData = nullptr;
 	float* filterData = nullptr;
 	int dropdownLength = 0;
+	bool contentsVisible = false;
 	const MapDimensions* mapDimensions;
 
 	std::vector<IPassWidget*> passes;

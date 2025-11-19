@@ -164,9 +164,29 @@ void PipelineStepWidget::SetupWidget()
 	connect(ui.pbDelete, &QPushButton::pressed, this, &PipelineStepWidget::Delete);
 
 	for (auto p : passes)
-		ui.perlinPassLayout->addWidget(p);
+		ui.passWidget->layout()->addWidget(p);
 	for (auto f : filters)
-		ui.filtersLayout->addWidget(f);
+		ui.filterWidget->layout()->addWidget(f);
+
+	connect(ui.dropdownButton, &QToolButton::pressed, this, [&]() {
+		contentsVisible = !contentsVisible;
+
+		if (contentsVisible)
+		{
+			ui.dropdownButton->setArrowType(Qt::ArrowType::UpArrow);
+		}
+		else {
+			ui.dropdownButton->setArrowType(Qt::ArrowType::DownArrow);
+		}
+
+		ui.filterWidget->setVisible(contentsVisible);
+		ui.passWidget->setVisible(contentsVisible);
+		ui.viewWidget->setVisible(contentsVisible);
+	});
+
+	ui.filterWidget->setVisible(contentsVisible);
+	ui.passWidget->setVisible(contentsVisible);
+	ui.viewWidget->setVisible(contentsVisible);
 }
 
 
