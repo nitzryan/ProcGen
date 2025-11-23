@@ -13,6 +13,52 @@
   <property name="windowTitle">
    <string>ProcGen</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow, QWidget {
+	background-color: #1e1e1e;
+    color: #d4d4d4;
+}
+
+QPushButton, QToolButton {
+	background-color: #d4d4d4;
+	color: #1e1e1e;
+	border-radius: 4px;
+	padding: 6px 12px;
+}
+
+QPushButton:hover, QToolButton:hover {
+	background-color: #a1a1a1;
+	color: #ffffff;
+}
+
+QPushButton:pressed, QToolButton:pressed {
+	background-color: #888888;
+}
+
+QLineEdit {
+    border: 1px solid #404040;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+QLineEdit:hover {
+    border-bottom: 2px solid #007acc;   
+}
+
+QSpinBox, QDoubleSpinBox, QComboBox {
+	background-color: #2d2d2d;
+	border: 1px solid #404040;
+    border-radius: 4px;
+    padding: 6px 8px;
+     color: #d4d4d4;
+     selection-background-color: #007acc;
+}
+
+QSpinBox::up-button, QSpinBox::down-button,
+    QDoubleSpinBox::up-button, QDoubleSpinBox::down-button {
+        width: 0; height: 0; border: none; background: transparent;
+    }</string>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout" columnstretch="1,1">
     <item row="0" column="0">

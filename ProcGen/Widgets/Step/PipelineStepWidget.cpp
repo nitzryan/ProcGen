@@ -165,9 +165,9 @@ void PipelineStepWidget::SetupWidget()
 	connect(ui.pbDelete, &QPushButton::pressed, this, &PipelineStepWidget::Delete);
 
 	for (auto p : passes)
-		ui.passWidget->layout()->addWidget(p);
+		ui.passLayout->addWidget(p);
 	for (auto f : filters)
-		ui.filterWidget->layout()->addWidget(f);
+		ui.filterLayout->addWidget(f);
 
 	// Dropdown visibility
 	connect(ui.dropdownButton, &QToolButton::pressed, this, [&]() {
