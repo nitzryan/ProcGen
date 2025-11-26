@@ -98,6 +98,7 @@
     <ClCompile Include="Widgets\Map\MapWidget.cpp" />
     <ClCompile Include="Widgets\Filters\Mountain\MountainFilterWidget.cpp" />
     <ClCompile Include="Widgets\Passes\Offset\OffsetPass.cpp" />
+    <ClCompile Include="Widgets\Passes\PerlinFractal\PerlinFractalWidget.cpp" />
     <ClCompile Include="Widgets\Passes\Perlin\PerlinPassWidget.cpp" />
     <ClCompile Include="Widgets\Step\PipelineStepWidget.cpp" />
     <QtRcc Include="ProcGen.qrc" />
@@ -108,6 +109,7 @@
     <ClCompile Include="main.cpp" />
     <QtUic Include="Widgets\Filters\Mountain\MountainFilterWidget.ui" />
     <QtUic Include="Widgets\Passes\Offset\OffsetPass.ui" />
+    <QtUic Include="Widgets\Passes\PerlinFractal\PerlinFractalWidget.ui" />
     <QtUic Include="Widgets\Passes\Perlin\PerlinPassWidget.ui" />
     <QtUic Include="Widgets\Step\PipelineStepWidget.ui" />
   </ItemGroup>
@@ -126,6 +128,7 @@
     <QtMoc Include="Widgets\Filters\IFilterWidget.h" />
     <QtMoc Include="Widgets\Passes\IPassWidget.h" />
     <QtMoc Include="Widgets\Passes\Offset\OffsetPass.h" />
+    <QtMoc Include="Widgets\Passes\PerlinFractal\PerlinFractalWidget.h" />
     <ClInclude Include="Widgets\QStringUtilities.h" />
     <QtMoc Include="Generation\Pipeline\GenerationPipeline.h" />
     <ClInclude Include="Generation\Perlin\PerlinPass.h" />

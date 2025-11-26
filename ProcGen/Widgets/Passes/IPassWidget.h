@@ -8,7 +8,8 @@ namespace IPassWidgetNS
 {
 	enum class PASS_TYPE {
 		PERLIN = 1,
-		OFFSET = 2
+		OFFSET = 2,
+		PERLIN_FRACTAL = 3,
 	};
 }
 

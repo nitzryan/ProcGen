@@ -6,6 +6,7 @@
 #include <Widgets/QStringUtilities.h>
 #include <Widgets/Passes/Perlin/PerlinPassWidget.h>
 #include <Widgets/Passes/Offset/OffsetPass.h>
+#include <Widgets/Passes/PerlinFractal/PerlinFractalWidget.h>
 #include <Widgets/Filters/Mountain/MountainFilterWidget.h>
 
 PipelineStepWidget::PipelineStepWidget(const MapDimensions* md)
@@ -47,6 +48,9 @@ PipelineStepWidget::PipelineStepWidget(std::ifstream& file, const MapDimensions*
 			break;
 		case static_cast<int>(IPassWidgetNS::PASS_TYPE::OFFSET):
 			passes.push_back(new OffsetPass(file, mapDimensions));
+			break;
+		case static_cast<int>(IPassWidgetNS::PASS_TYPE::PERLIN_FRACTAL):
+			passes.push_back(new PerlinFractalWidget(file, mapDimensions));
 			break;
 		default:
 			throw std::exception("Invalid element type received at PipelineStepWidget");
@@ -249,6 +253,7 @@ void PipelineStepWidget::AddPassCallback()
 
 	QPushButton* perlinPassButton = messageBox.addButton("Perlin", QMessageBox::ActionRole);
 	QPushButton* offsetPassButton = messageBox.addButton("Offset", QMessageBox::ActionRole);
+	QPushButton* perlinFractalButtton = messageBox.addButton("Perlin Fractal", QMessageBox::ActionRole);
 	QPushButton* cancelButton = messageBox.addButton("Cancel", QMessageBox::RejectRole);
 
 	messageBox.setDefaultButton(cancelButton);
@@ -264,10 +269,13 @@ void PipelineStepWidget::AddPassCallback()
 	{
 		passes.push_back(new PerlinPassWidget(mapDimensions));
 	}
-
 	else if (clickedButton == offsetPassButton)
 	{
 		passes.push_back(new OffsetPass(mapDimensions));
+	}
+	else if (clickedButton == perlinFractalButtton)
+	{
+		passes.push_back(new PerlinFractalWidget(mapDimensions));
 	}
 
 	// Add Widget to view

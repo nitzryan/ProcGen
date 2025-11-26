@@ -79,6 +79,9 @@
     <ClCompile Include="Widgets\Passes\Offset\OffsetPass.cpp">
       <Filter>Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="Widgets\Passes\PerlinFractal\PerlinFractalWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Widgets\Map\MapWidget.h">
@@ -103,6 +106,9 @@
       <Filter>Widgets</Filter>
     </QtMoc>
     <QtMoc Include="Widgets\Filters\IFilterWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\Passes\PerlinFractal\PerlinFractalWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -147,6 +153,9 @@
     </QtUic>
     <QtUic Include="Widgets\Passes\Offset\OffsetPass.ui">
       <Filter>Widgets</Filter>
+    </QtUic>
+    <QtUic Include="Widgets\Passes\PerlinFractal\PerlinFractalWidget.ui">
+      <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
 </Project>
