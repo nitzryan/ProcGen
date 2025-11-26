@@ -3,6 +3,8 @@
 #include <qmessagebox.h>
 
 #include <fstream>
+#include <mutex>
+
 #include <Widgets/QStringUtilities.h>
 #include <Widgets/Passes/Perlin/PerlinPassWidget.h>
 #include <Widgets/Passes/Offset/OffsetPass.h>
@@ -55,7 +57,8 @@ PipelineStepWidget::PipelineStepWidget(std::ifstream& file, const MapDimensions*
 		default:
 			throw std::exception("Invalid element type received at PipelineStepWidget");
 		}	
-		connect(passes.back(), &IPassWidget::OutputPassData, this, &PipelineStepWidget::OutputPassData);
+
+		SetupPassSignals(passes.back());
 	}
 
 	// Read in filters
@@ -76,7 +79,7 @@ PipelineStepWidget::PipelineStepWidget(std::ifstream& file, const MapDimensions*
 			else 
 				throw new std::exception("Invalid filter type received at PipelineStepWidget");
 
-			connect(filters.back(), &IFilterWidget::OutputPassData, this, &PipelineStepWidget::OutputPassData);
+			SetupFilterSignals(filters.back());
 		}
 	}
 
@@ -280,7 +283,7 @@ void PipelineStepWidget::AddPassCallback()
 
 	// Add Widget to view
 	ui.passLayout->addWidget(passes.back());
-	connect(passes.back(), &IPassWidget::OutputPassData, this, &PipelineStepWidget::OutputPassData);
+	SetupPassSignals(passes.back());
 }
 
 void PipelineStepWidget::AddFilterCallback()
@@ -309,7 +312,85 @@ void PipelineStepWidget::AddFilterCallback()
 
 	// Add Widget to view
 	ui.filterLayout->addWidget(filters.back());
-	connect(filters.back(), &IFilterWidget::OutputPassData, this, &PipelineStepWidget::OutputPassData);
+	SetupFilterSignals(filters.back());
+}
+
+void PipelineStepWidget::SetupPassSignals(const IPassWidget* w)
+{
+	connect(w, &IPassWidget::OutputPassData, this, &PipelineStepWidget::OutputPassData);
+	connect(w, &IPassWidget::DeletePass, this, &PipelineStepWidget::PassDeleted);
+}
+
+void PipelineStepWidget::SetupFilterSignals(const IFilterWidget* w)
+{
+	connect(w, &IFilterWidget::OutputPassData, this, &PipelineStepWidget::OutputPassData);
+	connect(w, &IFilterWidget::DeleteFilter, this, &PipelineStepWidget::FilterDeleted);
+}
+
+void PipelineStepWidget::PassDeleted()
+{
+	void* obj = sender();
+
+	if (obj == nullptr)
+		throw std::exception("PipelineStepWidget received PassDeleted from null sender");
+
+	// Ensure no race conditions
+	std::lock_guard<std::mutex> lock(passDeleteMutex);
+
+	// Find pass that sent signal
+	int passIndex = -1;
+	for (int i = 0; i < passes.size(); i++)
+	{
+		if (passes[i] == obj)
+		{
+			passIndex = i;
+			break;
+		}
+	}
+
+	if (passIndex == -1)
+		throw std::exception("Pass was not found to be deleted");
+
+	// Delete Values
+	QLayoutItem* item = ui.passLayout->takeAt(passIndex);
+	delete item->widget();
+	delete item;
+
+	// Remove from stored passes
+	passes.erase(passes.begin() + passIndex);
+}
+
+void PipelineStepWidget::FilterDeleted()
+{
+	void* obj = sender();
+
+	if (obj == nullptr)
+		throw std::exception("PipelineStepWidget received FilterDeleted from null sender");
+
+	// Ensure no race conditions
+	std::lock_guard<std::mutex> lock(filterDeleteMutex);
+
+	// Find pass that sent signal
+	int filterIndex = -1;
+	for (int i = 0; i < filters.size(); i++)
+	{
+		if (filters[i] == obj)
+		{
+			filterIndex = i;
+			break;
+		}
+	}
+
+	if (filterIndex == -1)
+		throw std::exception("Filter was not found to be deleted");
+
+	// Delete Values
+	QLayoutItem* item = ui.filterLayout->takeAt(filterIndex);
+	delete item->widget();
+	delete item;
+
+	// Remove from stored passes
+	filters.erase(filters.begin() + filterIndex);
 }
 
 

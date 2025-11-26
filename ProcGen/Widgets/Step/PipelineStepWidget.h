@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QWidget>
+#include <mutex>
 #include "ui_PipelineStepWidget.h"
 
 #include <Widgets/Passes/IPassWidget.h>
@@ -38,7 +39,15 @@ private:
 	std::vector<IPassWidget*> passes;
 	std::vector<IFilterWidget*> filters;
 
+	std::mutex passDeleteMutex, filterDeleteMutex;
+
 	void AddPassCallback();
 	void AddFilterCallback();
+	void SetupPassSignals(const IPassWidget* w);
+	void SetupFilterSignals(const IFilterWidget* w);
+
+private slots:
+	void PassDeleted();
+	void FilterDeleted();
 };
 

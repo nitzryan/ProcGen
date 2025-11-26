@@ -1,7 +1,5 @@
 #include "MapWidget.h"
 
-#include <random>
-#include <algorithm>
 #include <qlabel.h>
 
 MapWidget::MapWidget(QWidget* parent) : QWidget(parent)

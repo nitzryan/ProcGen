@@ -18,14 +18,7 @@ PerlinPassWidget::PerlinPassWidget(const MapDimensions* md)
 	ui.sbNumGrad->setValue(numGradients);
 	ui.sbPerlinRep->setValue(perlinRepCount);
 
-	auto updatePerlinData = [&]() {
-		perlinPass->Reinitialize(ui.sbNumGrad->value(), ui.sbPerlinRep->value());
-	};
-	connect(ui.sbNumGrad, &QSpinBox::valueChanged, this, updatePerlinData);
-	connect(ui.sbPerlinRep, &QSpinBox::valueChanged, this, updatePerlinData);
-
-	// Handle viewing only this step
-	connect(ui.pbView, &QPushButton::pressed, this, &IPassWidget::EmitPassOutput);
+	SetupSignals();
 }
 
 PerlinPassWidget::PerlinPassWidget(std::ifstream& file, const MapDimensions* md) 
@@ -49,14 +42,7 @@ PerlinPassWidget::PerlinPassWidget(std::ifstream& file, const MapDimensions* md)
 	ui.sbNumGrad->setValue(numGradients);
 	ui.sbPerlinRep->setValue(perlinRepCount);
 
-	auto updatePerlinData = [&]() {
-		perlinPass->Reinitialize(ui.sbNumGrad->value(), ui.sbPerlinRep->value());
-		};
-	connect(ui.sbNumGrad, &QSpinBox::valueChanged, this, updatePerlinData);
-	connect(ui.sbPerlinRep, &QSpinBox::valueChanged, this, updatePerlinData);
-
-	// Handle viewing only this step
-	connect(ui.pbView, &QPushButton::pressed, this, &IPassWidget::EmitPassOutput);
+	SetupSignals();
 }
 
 void PerlinPassWidget::WriteToFile(std::ofstream& file) const
@@ -73,5 +59,17 @@ PerlinPassWidget::~PerlinPassWidget()
 void PerlinPassWidget::GetPassOutput(float* data)
 {
 	perlinPass->GenerateMap(ui.sbSeed->value(), mapDimensions->width, mapDimensions->height, ui.dsbBlockSize->value(), ui.dsbScale->value(), data);
+}
+
+void PerlinPassWidget::SetupSignals()
+{
+	auto updatePerlinData = [&]() {
+		perlinPass->Reinitialize(ui.sbNumGrad->value(), ui.sbPerlinRep->value());
+		};
+	connect(ui.sbNumGrad, &QSpinBox::valueChanged, this, updatePerlinData);
+	connect(ui.sbPerlinRep, &QSpinBox::valueChanged, this, updatePerlinData);
+
+	connect(ui.pbView, &QPushButton::pressed, this, &IPassWidget::EmitPassOutput);
+	connect(ui.pbDelete, &QPushButton::pressed, this, &IPassWidget::DeletePass);
 }
 

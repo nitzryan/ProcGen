@@ -31,6 +31,7 @@ public:
 	}
 signals:
 	void OutputPassData(MapData mapData);
+	void DeleteFilter();
 protected:
 	const MapDimensions* mapDimensions;
 };

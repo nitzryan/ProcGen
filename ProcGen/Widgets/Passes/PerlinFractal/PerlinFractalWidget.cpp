@@ -93,5 +93,6 @@ void PerlinFractalWidget::Setup(int numGradients, int perlinRepCount)
 
 	// Signals to parent
 	connect(ui.pbView, &QPushButton::pressed, this, &IPassWidget::EmitPassOutput);
+	connect(ui.pbDelete, &QPushButton::pressed, this, &IPassWidget::DeletePass);
 }
 

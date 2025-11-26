@@ -21,5 +21,6 @@ private:
 	MountainFilterMap map;
 
 	void UpdateFilterMap();
+	void SetupSignals();
 };
 

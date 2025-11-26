@@ -22,5 +22,7 @@ public:
 private:
 	Ui::PerlinPassWidget ui;
 	PerlinPass* perlinPass;
+
+	void SetupSignals();
 };
 

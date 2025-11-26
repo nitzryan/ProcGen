@@ -19,5 +19,7 @@ public:
 
 private:
 	Ui::OffsetPassClass ui;
+
+	void SetupSignals();
 };
 
