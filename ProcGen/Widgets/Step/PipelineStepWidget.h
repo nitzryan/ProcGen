@@ -37,5 +37,8 @@ private:
 
 	std::vector<IPassWidget*> passes;
 	std::vector<IFilterWidget*> filters;
+
+	void AddPassCallback();
+	void AddFilterCallback();
 };
 

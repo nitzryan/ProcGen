@@ -1,5 +1,7 @@
 #include "PipelineStepWidget.h"
 
+#include <qmessagebox.h>
+
 #include <fstream>
 #include <Widgets/QStringUtilities.h>
 #include <Widgets/Passes/Perlin/PerlinPassWidget.h>
@@ -73,6 +75,10 @@ PipelineStepWidget::PipelineStepWidget(std::ifstream& file, const MapDimensions*
 			connect(filters.back(), &IFilterWidget::OutputPassData, this, &PipelineStepWidget::OutputPassData);
 		}
 	}
+
+	// Setup button callbacks
+	connect(ui.pbAddPass, &QPushButton::pressed, this, &PipelineStepWidget::AddPassCallback);
+	connect(ui.pbAddFilter, &QPushButton::pressed, this, &PipelineStepWidget::AddFilterCallback);
 
 	SetupWidget();
 }
@@ -232,6 +238,70 @@ void PipelineStepWidget::SetupWidget()
 		md.dimensions = *mapDimensions;
 		emit OutputPassData(md);
 	});
+}
+
+void PipelineStepWidget::AddPassCallback()
+{
+	// Get user choice
+	QMessageBox messageBox;
+	messageBox.setWindowTitle("Choose Pass Type");
+	messageBox.setText("Choose Pass Type");
+
+	QPushButton* perlinPassButton = messageBox.addButton("Perlin", QMessageBox::ActionRole);
+	QPushButton* offsetPassButton = messageBox.addButton("Offset", QMessageBox::ActionRole);
+	QPushButton* cancelButton = messageBox.addButton("Cancel", QMessageBox::RejectRole);
+
+	messageBox.setDefaultButton(cancelButton);
+	messageBox.exec();
+
+	// Create chosen pass
+
+	void* clickedButton = messageBox.clickedButton();
+	if (clickedButton == cancelButton)
+		return;
+
+	if (clickedButton == perlinPassButton)
+	{
+		passes.push_back(new PerlinPassWidget(mapDimensions));
+	}
+
+	else if (clickedButton == offsetPassButton)
+	{
+		passes.push_back(new OffsetPass(mapDimensions));
+	}
+
+	// Add Widget to view
+	ui.passLayout->addWidget(passes.back());
+	connect(passes.back(), &IPassWidget::OutputPassData, this, &PipelineStepWidget::OutputPassData);
+}
+
+void PipelineStepWidget::AddFilterCallback()
+{
+	// Get user choice
+	QMessageBox messageBox;
+	messageBox.setWindowTitle("Choose Filter Type");
+	messageBox.setText("Choose Filter Type");
+
+	QPushButton* mountainFilterButton = messageBox.addButton("Mountain", QMessageBox::ActionRole);
+	QPushButton* cancelButton = messageBox.addButton("Cancel", QMessageBox::RejectRole);
+
+	messageBox.setDefaultButton(cancelButton);
+	messageBox.exec();
+
+	// Create chosen pass
+
+	void* clickedButton = messageBox.clickedButton();
+	if (clickedButton == cancelButton)
+		return;
+
+	if (clickedButton == mountainFilterButton)
+	{
+		filters.push_back(new MountainFilterWidget(mapDimensions));
+	}
+
+	// Add Widget to view
+	ui.filterLayout->addWidget(filters.back());
+	connect(filters.back(), &IFilterWidget::OutputPassData, this, &PipelineStepWidget::OutputPassData);
 }
 
 
